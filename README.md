@@ -1,54 +1,5 @@
 ## Life is art. Here is my portfolio.
 
-### Instagram
-<a href="instagram.com/chrischain__">
-    <button>Instagram</button>
-</a>
-
-### YouTube
-<a href="https://www.youtube.com/channel/UC_s4qEsdK2m5x7-KMlVss8Q">
-    <button>Instagram</button>
-</a>
-
-### Bandcamp
-<a href="stol.bandcamp.com">
-    <button>Instagram</button>
-</a>
-
-### GitHub
-<a href="github.com/chrischain-gh">
-    <button>Instagram</button>
-</a>
-
-
-<div id="London" class="tabcontent">
-  <h1>London</h1>
-  <p>London is the capital city of England.</p>
-</div>
-
-<div id="Paris" class="tabcontent">
-  <h1>Paris</h1>
-  <p>Paris is the capital of France.</p>
-</div>
-
-<div id="Tokyo" class="tabcontent">
-  <h1>Tokyo</h1>
-  <p>Tokyo is the capital of Japan.</p>
-</div>
-
-<div id="Oslo" class="tabcontent">
-  <h1>Oslo</h1>
-  <p>Oslo is the capital of Norway.</p>
-</div>
-
-<button class="tablink" onclick="openCity('London', this, 'red')" id="defaultOpen">London</button>
-<button class="tablink" onclick="openCity('Paris', this, 'green')">Paris</button>
-<button class="tablink" onclick="openCity('Tokyo', this, 'blue')">Tokyo</button>
-<button class="tablink" onclick="openCity('Oslo', this, 'orange')">Oslo</button>
-
-
-
-
 You can use the [editor on GitHub](https://github.com/chrischain-gh/chrischain-gh.github.io/edit/main/README.md) to maintain and preview the content for your website in Markdown files.
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
