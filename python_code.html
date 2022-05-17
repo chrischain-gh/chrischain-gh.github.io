@@ -9,11 +9,28 @@
 <body>
     <header>
         <h1>Python Code</h1>
+        <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+        <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+        <py-env>
+            - pandas
+            - matplotlib
+        </py-env>
     </header>
 
     <a href="index.html">Back to home page</a>
     <br><br>
     <!--Python code-->
+    <body>
+        <py-script> print('testing python') </py-script>
+        <py-script output="plot">
+            import matplotlib.pyplot as plt
+            import pandas as pd
+            fig, ax = subplots()
+            plt.scatter(1,1)
+            fig
+        </py-script>
+    </body>
+    
     
     <aside>
         <h3>Menu</h3>
