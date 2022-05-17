@@ -1,7 +1,23 @@
-## Welcome to GitHub Pages
+## Life is art. Here is my portfolio.
 
-<a href="https://example.com">
-    <button>Click me</button>
+### Instagram
+<a href="instagram.com/chrischain__">
+    <button>Instagram</button>
+</a>
+
+### YouTube
+<a href="https://www.youtube.com/channel/UC_s4qEsdK2m5x7-KMlVss8Q">
+    <button>Instagram</button>
+</a>
+
+### Bandcamp
+<a href="stol.bandcamp.com">
+    <button>Instagram</button>
+</a>
+
+### GitHub
+<a href="github.com/chrischain-gh">
+    <button>Instagram</button>
 </a>
 
 You can use the [editor on GitHub](https://github.com/chrischain-gh/chrischain-gh.github.io/edit/main/README.md) to maintain and preview the content for your website in Markdown files.
