@@ -17,7 +17,7 @@ for gph in gphs:
 
 agg_ac_perf_df = pd.read_csv('nmpg_speed_table.csv').set_index('Speed [kts]')
 
-plt.figure(figsize=(20, 10))
+plt.figure(figsize=(16, 8))
 for index, nmpg_per_gph in enumerate(all_nmpg_per_gph):
     plt.plot(v_nmphs, nmpg_per_gph, label = '%s GPH'%gphs[index])
 
@@ -33,4 +33,5 @@ plt.yticks(range(0,90,5))
 plt.legend(loc='upper left', bbox_to_anchor=(1,1),
            ncol=1, fancybox=True, shadow=True)
 plt.grid()
+plt.tight_layout()
 plt
