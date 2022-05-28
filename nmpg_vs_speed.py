@@ -14,11 +14,14 @@ for gph in gphs:
         nmpg = v_nmph / gph
         nmpg_per_gph.append(nmpg)
     all_nmpg_per_gph.append(nmpg_per_gph)
-    
-plt.figure(figsize=(12, 6))
+
+agg_ac_perf_df = pd.read_csv('nmpg_speed_table.csv').set_index('Speed [kts]')
+
+plt.figure(figsize=(20, 10))
 for index, nmpg_per_gph in enumerate(all_nmpg_per_gph):
     plt.plot(v_nmphs, nmpg_per_gph, label = '%s GPH'%gphs[index])
 
+agg_ac_perf_df.groupby('Model')['NMPG'].plot(style='o', markersize=4, legend=True)
 
 plt.axvline(250, color='k', linestyle='--')
 

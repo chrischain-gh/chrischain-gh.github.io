@@ -14,6 +14,8 @@
             <py-env>
                 - matplotlib
                 - pandas
+                - paths:
+                    - ./nmpg_speed_table.csv
             </py-env>
         </header>
 
@@ -23,6 +25,7 @@
         <body>
             <py-script>
                 print('Here\'s my PyScript test')
+                print('WAIT A FEW SECONDS FOR THE PLOT TO LOAD')
             </py-script>
             <py-script src="nmpg_vs_speed.py"> </py-script>
         </body>
