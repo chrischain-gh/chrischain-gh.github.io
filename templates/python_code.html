@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<h1>Python Code</h1>
+<link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+<script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+<py-env>
+    - matplotlib
+    - pandas
+    - paths:
+        - ./docs/nmpg_speed_table.csv
+</py-env>
+{% endblock %}
+
+{% block body %}
+
+<py-script>
+    print('Here\'s my PyScript test')
+    print('WAIT A FEW SECONDS FOR THE PLOT TO LOAD')
+</py-script>
+<py-script src="docs/nmpg_vs_speed.py"> </py-script>
+
+{% endblock %}
