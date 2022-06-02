@@ -10,10 +10,12 @@
     <body>
         {% block body %}{% endblock %}
 
-        <a href="index.html">Back to home page</a>
     </body>  
 
     <aside>
+        <br>
+        <a href="index.html">Back to home page</a>
+
         <h3>Menu</h3>
         <ul>
             <li><a href="{{ url_for('index') }}">Home Page</a></li>
