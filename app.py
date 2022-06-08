@@ -22,9 +22,13 @@ def photography():
 def video():
     return render_template('video.html')
 
-@app.route('/resume_aviation.html')
+@app.route('/resumes/resume_aviation.html')
 def resume_aviation():
-    return render_template('resume_aviation.html')
+    return render_template('resumes/resume_aviation.html')
+
+@app.route('/resumes/music_resume.html')
+def music_resume():
+    return render_template('resumes/music_resume.html')
 
 @app.route('/python_code.html')
 def python_code():
