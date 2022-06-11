@@ -30,9 +30,13 @@ def resume_aviation():
 def music_resume():
     return render_template('resumes/music_resume.html')
 
-@app.route('/python_code.html')
-def python_code():
-    return render_template('python_code.html')
+@app.route('/python_projects/aircraft_mpg.html')
+def aircraft_mpg():
+    return render_template('python_projects/aircraft_mpg.html')
+
+@app.route('/python_projects/pyscript_test_aircraft_mpg.html')
+def pyscript_test_aircraft_mpg():
+    return render_template('python_projects/pyscript_test_aircraft_mpg.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

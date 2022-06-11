@@ -57,6 +57,14 @@
             </div>
         </div> 
 
+        <div class="dropdown">
+            <button class="dropbtn">Python Projects</button>
+            <div class="dropdown-content">
+            <a href="{{ url_for('aircraft_mpg') }}">Aircraft MPG</a>
+            <a href="{{ url_for('pyscript_test_aircraft_mpg') }}">PyScript Test: Aircraft MPG</a>
+            </div>
+        </div> 
+
         {% block head %}{% endblock %}
     </head>
 
@@ -77,7 +85,6 @@
             <li><a href="{{ url_for('photography') }}">Photography</a></li>
             <li><a href="{{ url_for('video') }}">Video</a></li>
             <li><a href="{{ url_for('resume_aviation') }}">Resume</a></li>
-            <li><a href="{{ url_for('python_code') }}">Python Code</a></li>
         </ul>
     </aside>
 
