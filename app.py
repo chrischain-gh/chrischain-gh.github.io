@@ -38,5 +38,9 @@ def aircraft_mpg():
 def pyscript_test_aircraft_mpg():
     return render_template('python_projects/pyscript_test_aircraft_mpg.html')
 
+@app.route('/aircraft_pipe_dreams.html')
+def aircraft_pipe_dreams():
+    return render_template('aircraft_pipe_dreams.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
