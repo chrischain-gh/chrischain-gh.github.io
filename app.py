@@ -42,5 +42,9 @@ def pyscript_test_aircraft_mpg():
 def aircraft_pipe_dreams():
     return render_template('aircraft_pipe_dreams.html')
 
+@app.route('/zenith_build_study.html')
+def zenith_build_study():
+    return render_template('zenith_build_study.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
