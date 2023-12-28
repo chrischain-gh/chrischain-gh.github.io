@@ -54,7 +54,7 @@ def mortgage_planning():
 def lancair_360_build_manual():
     return render_template('lancair_360_build/lancair_360_build_manual.html')
 
-@app.route('/lancair_legacy_build/lancair_360_build_manual.html')
+@app.route('/lancair_legacy_build/lancair_legacy_build_manual.html')
 def lancair_legacy_build_manual():
     return render_template('lancair_legacy_build/lancair_legacy_build_manual.html')
 
