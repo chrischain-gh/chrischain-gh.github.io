@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+from pyscript import display
 
 gphs = range(3, 16)
 gphs
@@ -34,4 +35,4 @@ plt.legend(loc='upper left', bbox_to_anchor=(1,1),
            ncol=1, fancybox=True, shadow=True)
 plt.grid()
 plt.tight_layout()
-plt
+display(plt)

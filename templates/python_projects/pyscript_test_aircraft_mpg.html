@@ -3,21 +3,15 @@
 {% block head %}
 <h1>Python Code</h1>
 <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
-<script defer src="https://pyscript.net/alpha/pyscript.js"></script>
-<py-env>
-    - matplotlib
-    - pandas
-    - paths:
-        - ./nmpg_speed_table.csv
-</py-env>
+<!-- This script tag bootstraps PyScript -->
+<script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
 {% endblock %}
 
 {% block body %}
 
-<py-script>
-    print('Here\'s my PyScript test')
-    print('WAIT A FEW SECONDS FOR THE PLOT TO LOAD')
-</py-script>
-<py-script src="nmpg_vs_speed.py"> </py-script>
+<section class="pyscript">
+    <div id="folium"></div>
+    <script type="py" src="./nmpg_vs_speed.py" config="./pyscript.toml"></script>
+</section>
 
 {% endblock %}
