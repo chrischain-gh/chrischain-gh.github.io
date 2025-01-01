@@ -1,0 +1,8 @@
+name = "Folium"
+description = "A simple application that uses pandas and folium to draw heatmaps on a map."
+packages = ["matplotlib", "pandas"]
+
+[files]
+"./ccarcsdb/carscurr.txt" = ""
+"./ccarcsdb/carsownr.txt" = ""
+"./ccarcsdb/carslayout.txt" = ""

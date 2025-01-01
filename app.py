@@ -34,6 +34,10 @@ def music_resume():
 def aircraft_mpg():
     return render_template('python_projects/aircraft_mpg.html')
 
+@app.route('/python_projects/regsearch.html')
+def regsearch():
+    return render_template('python_projects/regsearch.html')
+
 @app.route('/python_projects/pyscript_test_aircraft_mpg.html')
 def pyscript_test_aircraft_mpg():
     return render_template('python_projects/pyscript_test_aircraft_mpg.html')

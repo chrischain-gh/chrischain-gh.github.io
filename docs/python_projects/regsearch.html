@@ -1,0 +1,177 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <meta name = "viewport"
+            content = "width=device-width, initial-scale = 1" />
+        <style>
+        .dropbtn {
+            background-color: #04AA6D;
+            color: white;
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+        }
+        
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+        
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .dropdown-content a:hover {background-color: #ddd;}
+        
+        .dropdown:hover .dropdown-content {display: block;}
+        
+        .dropdown:hover .dropbtn {background-color: #3e8e41;}
+
+
+        table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 50%;
+        }
+        
+        td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+        }
+        
+        tr:nth-child(even) {
+        background-color: #dddddd;
+        }
+        </style>
+            
+        <div class="dropdown">
+            <button class="dropbtn">Home</button>
+            <div class="dropdown-content">
+            <a href="#">Link 1</a>
+            <a href="#">Link 2</a>
+            <a href="#">Link 3</a>
+            </div>
+        </div>
+        
+        <div class="dropdown">
+            <button class="dropbtn">Resumes</button>
+            <div class="dropdown-content">
+            <a href="../resumes/resume_aviation.html">Aviation Resume</a>
+            <a href="../resumes/music_resume.html">Music Resume</a>
+            </div>
+        </div> 
+
+        <div class="dropdown">
+            <button class="dropbtn">Python Projects</button>
+            <div class="dropdown-content">
+            <a href="aircraft_mpg.html">Aircraft MPG</a>
+            <a href="pyscript_test_aircraft_mpg.html">PyScript Test: Aircraft MPG</a>
+            <a href="regsearch.html">RegSearch</a>
+            </div>
+        </div> 
+
+        <div class="dropdown">
+            <button class="dropbtn">Aircraft Studies</button>
+            <div class="dropdown-content">
+            <a href="../zenith_build_study.html">Zenith Build Study</a>
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <button class="dropbtn">Lancair Build</button>
+            <div class="dropdown-content">
+            <a href="../lancair_360_build/lancair_360_build_manual.html">Lancair 320/360 Build Manual</a>
+            <a href="../lancair_legacy_build/lancair_legacy_build_manual.html">Lancair Legacy Build Manual</a>
+            </div>
+        </div>
+
+        
+    <!-- Recommended meta tags -->
+    <!--<meta charset="UTF-8"> -->
+    <!--<meta name="viewport" content="width=device-width,initial-scale=1.0">-->
+    <!-- PyScript CSS -->
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.11.1/core.css">
+    <!-- This script tag bootstraps PyScript -->
+    <script type="module" src="https://pyscript.net/releases/2024.11.1/core.js"></script>
+    
+    <!-- for splashscreen -->
+    <style>
+        #loading { outline: none; border: none; background: transparent }
+    </style>
+    <script type="module">
+        const loading = document.getElementById('loading');
+        addEventListener('py:ready', () => loading.close());
+        loading.showModal();
+    </script>
+
+    <!-- style for spinner and canvas -->
+    <style>
+        .loading {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: black;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        canvas {
+            display: none;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+
+    </head>
+
+    <body>
+        
+
+<dialog id="loading">
+    <h1>Loading...</h1>
+</dialog>
+
+<!-- your code goes here... -->
+<script type="py" src="./ac_register_plot.py" config="./regsearch_config.toml"></script>
+
+
+
+    </body>  
+
+    <aside>
+        <br>
+        <a href="../index.html">Back to home page</a>
+
+        <h3>Menu</h3>
+        <ul>
+            <li><a href="../index.html">Home Page</a></li>
+            <li><a href="../account_links.html">Profile Links</a></li>
+            <li><a href="../ig_links.html">Instagram Post Links</a></li>
+            <li><a href="../photography.html">Photography</a></li>
+            <li><a href="../video.html">Video</a></li>
+            <li><a href="../resumes/resume_aviation.html">Resume</a></li>
+        </ul>
+    </aside>
+
+    <footer>
+        <p>Copyright &copy 2023 Chris Chain</p>
+    </footer>
+</html>
