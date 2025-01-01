@@ -67,7 +67,7 @@ def run_func(e):
     display(f"You entered: {user_input}", target="result_area")
 
     # Example of using the input value to filter or plot
-    filtered_data = df_ccars_merged[df_ccars_merged['MODEL_NAME'] == user_input]
+    filtered_data = df_ccars_merged[df_ccars_merged['MODEL_NAME'].str.contains(user_input)]
     display(filtered_data, target="result_area")
 
     # Group by a column and show the count
