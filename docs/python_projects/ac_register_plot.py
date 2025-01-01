@@ -1,6 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from pyscript import display
+from pyscript import document
+
 
 df_ccarscurr = pd.read_csv("carscurr.txt",
                             encoding = "ISO-8859-1",
@@ -47,18 +49,41 @@ df_ccars_merged = pd.merge(df_ccarscurr,
                            right_on='MARK_LINK',
                            suffixes=('', '_ownr'))
 
+# Define the function that gets called when the button is clicked
+def run_func(e):
+    
+    # Clear the previous output in the result div
+    document.getElementById("result_area").innerHTML = ""  # Clear the result div
+    
+    # Get the input value from the HTML element using PyScript's access
+    user_input = document.getElementById("userInput").value
+    
+    # If the input is empty, do nothing
+    if not user_input:
+        display("Please enter a valid value.", target="result_area")
+        return
+    
+    # Display the value entered in the input box
+    display(f"You entered: {user_input}", target="result_area")
 
-display(df_ccars_merged[df_ccars_merged['MODEL_NAME'] == "175"])
+    # Example of using the input value to filter or plot
+    filtered_data = df_ccars_merged[df_ccars_merged['MODEL_NAME'] == user_input]
+    display(filtered_data, target="result_area")
 
-display(df_ccars_merged[df_ccars_merged['MODEL_NAME'] == "175"].groupby('BASE_PROVINCE_OR_STATE_E').count()[['MARK']])
+    # Group by a column and show the count
+    group_data = filtered_data.groupby('BASE_PROVINCE_OR_STATE_E').count()[['MARK']]
+    display(group_data, target="result_area")
 
+    # Plot the data
+    ax = filtered_data.groupby('BASE_PROVINCE_OR_STATE_E').count()['MARK'].plot.bar()
+    plt.title(f"Count per Province for Model {user_input}")
+    plt.xlabel('Province')
+    plt.ylabel('Count')
+    plt.grid()
+    plt.tight_layout()
 
+    # Display the plot
+    display(plt, target="result_area")
 
-ax=df_ccars_merged[df_ccars_merged['MODEL_NAME'] == "175"].groupby('BASE_PROVINCE_OR_STATE_E').count()['MARK'].plot.bar()
-plt.title('Count per Province')
-plt.xlabel('Province')
-plt.ylabel('Count')
-plt.grid()
-plt.tight_layout()
-display(plt)
-#display(df_ccars_merged[df_ccars_merged['MODEL_NAME'] == "175"].groupby('BASE_PROVINCE_OR_STATE_E').count()['MARK'].plot.bar())
+# Attach the event handler to the button click
+document.getElementById("runButton").onclick = run_func

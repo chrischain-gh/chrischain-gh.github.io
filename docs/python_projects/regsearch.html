@@ -149,8 +149,17 @@
     <h1>Loading...</h1>
 </dialog>
 
+<!-- Your input and button here -->
+<h1>Enter some data and press "Run"</h1>
+
+<!-- Entry box for user input -->
+<input type="text" id="userInput" placeholder="Enter value" />
+<button id="runButton" type="submit" py-click="run_func">Run Function</button>
+
 <!-- your code goes here... -->
+<div id="result_area">
 <script type="py" src="./ac_register_plot.py" config="./regsearch_config.toml"></script>
+</div>
 
 
 
