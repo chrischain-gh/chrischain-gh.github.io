@@ -151,12 +151,17 @@
 </dialog>
 
 <!-- Your input and button here -->
-<h1>Enter some data and press "Run"</h1>
+<h1>Canadian Aircraft Register Search</h1>
 
 <!-- Entry box for user input -->
-<input type="text" id="userInput" placeholder="Enter value" />
-<button id="runButton" type="submit" py-click="run_func">Run Function</button>
+<input type="text" id="userInputMARK" placeholder="Enter MARK value" />
+<input type="text" id="userInputCOMMON_NAME" placeholder="Enter COMMON_NAME value" />
+<input type="text" id="userInputMODEL_NAME" placeholder="Enter MODEL_NAME value" />
+<input type="text" id="userInputBASE_PROVINCE_OR_STATE_E" placeholder="Enter BASE_PROVINCE_OR_STATE_E value" />
+<input type="text" id="userInputFULL_NAME" placeholder="Enter FULL_NAME value" />
+<input type="text" id="userInputOWNER_NAME_OLD_FORMAT" placeholder="Enter OWNER_NAME_OLD_FORMAT value" />
 
+<button id="runButton" type="submit" py-click="run_func">Run Function</button>
 <!-- your code goes here... -->
 <div id="result_area">
 <script type="py" src="./ac_register_plot.py" config="./regsearch_config.toml"></script>

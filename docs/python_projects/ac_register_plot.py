@@ -56,18 +56,39 @@ def run_func(e):
     document.getElementById("result_area").innerHTML = ""  # Clear the result div
     
     # Get the input value from the HTML element using PyScript's access
-    user_input = document.getElementById("userInput").value
+    user_input_MARK = document.getElementById("userInputMARK").value
+    user_input_COMMON_NAME = document.getElementById("userInputCOMMON_NAME").value
+    user_input_MODEL_NAME = document.getElementById("userInputMODEL_NAME").value
+    user_input_BASE_PROVINCE_OR_STATE_E = document.getElementById("userInputBASE_PROVINCE_OR_STATE_E").value
+    user_input_FULL_NAME = document.getElementById("userInputFULL_NAME").value
+    user_input_OWNER_NAME_OLD_FORMAT = document.getElementById("userInputOWNER_NAME_OLD_FORMAT").value
+    
+    query_string = []
+    if user_input_MARK:
+        query_string.append(f'(df_ccars_merged[\'MARK\'].str.contains(\'{user_input_MARK}\'))')
+    if user_input_COMMON_NAME:
+        query_string.append(f'(df_ccars_merged[\'COMMON_NAME\'].str.contains(\'{user_input_COMMON_NAME}\'))')
+    if user_input_MODEL_NAME:
+        query_string.append(f'(df_ccars_merged[\'MODEL_NAME\'].str.contains(\'{user_input_MODEL_NAME}\'))')
+    if user_input_BASE_PROVINCE_OR_STATE_E:
+        query_string.append(f'(df_ccars_merged[\'BASE_PROVINCE_OR_STATE_E\'].str.contains(\'{user_input_BASE_PROVINCE_OR_STATE_E}\'))')
+    if user_input_FULL_NAME:
+        query_string.append(f'(df_ccars_merged[\'FULL_NAME\'].str.contains(\'{user_input_FULL_NAME}\'))')
+    if user_input_OWNER_NAME_OLD_FORMAT:
+        query_string.append(f'(df_ccars_merged[\'OWNER_NAME_OLD_FORMAT\'].str.contains(\'{user_input_OWNER_NAME_OLD_FORMAT}\'))')
     
     # If the input is empty, do nothing
-    if not user_input:
+    if query_string == []:
         display("Please enter a valid value.", target="result_area")
         return
     
     # Display the value entered in the input box
-    display(f"You entered: {user_input}", target="result_area")
+    display(f"You entered: {user_input_MODEL_NAME}", target="result_area")
 
     # Example of using the input value to filter or plot
-    filtered_data = df_ccars_merged[df_ccars_merged['MODEL_NAME'].str.contains(user_input)]
+    filter_clause = ' & '.join(query_string)    
+    
+    filtered_data = df_ccars_merged[eval(filter_clause)]
     display(filtered_data, target="result_area")
 
     # Group by a column and show the count
@@ -76,7 +97,7 @@ def run_func(e):
 
     # Plot the data
     ax = filtered_data.groupby('BASE_PROVINCE_OR_STATE_E').count()['MARK'].plot.bar()
-    plt.title(f"Count per Province for Model {user_input}")
+    plt.title(f"Count per Province for Model {user_input_MODEL_NAME}")
     plt.xlabel('Province')
     plt.ylabel('Count')
     plt.grid()
