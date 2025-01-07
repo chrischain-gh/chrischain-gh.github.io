@@ -70,7 +70,7 @@ def run_func(e):
     
     query_string = []
     if user_input_MARK:
-        query_string.append(f'(df_ccars_merged[\'MARK\'].str.casefold().str.str.contains(\'{user_input_MARK}\'))')
+        query_string.append(f'(df_ccars_merged[\'MARK\'].str.casefold().str.contains(\'{user_input_MARK}\'))')
     if user_input_COMMON_NAME:
         query_string.append(f'(df_ccars_merged[\'COMMON_NAME\'].str.casefold().str.contains(\'{user_input_COMMON_NAME}\'))')
     if user_input_MODEL_NAME:
@@ -94,22 +94,36 @@ def run_func(e):
     filter_clause = ' & '.join(query_string)    
     
     filtered_data = df_ccars_merged[eval(filter_clause)]
+    display('First 5 Results:', target="result_area")
+    display(filtered_data.head(5), target="result_area")
+    display('Last 5 Results:', target="result_area")
+    display(filtered_data.tail(5), target="result_area")
+
+    for value in ['COMMON_NAME',
+                  'MODEL_NAME',
+                  'BASE_PROVINCE_OR_STATE_E',
+                  'FULL_NAME',
+                  'OWNER_NAME_OLD_FORMAT']:
+        display(f"{value} Info:", target="result_area")
+        # Group by a column and show the count
+        group_data = filtered_data.groupby(value).count()[['MARK']].sort_values(by='MARK', ascending=False)
+        display(group_data.reset_index(), target="result_area")
+
+        # Plot the data
+        with plt.style.context('dark_background'):
+            ax = group_data.plot.bar()
+            plt.title(f"Count per {value} for Model {user_input_MODEL_NAME}")
+            plt.xlabel(f'{value}')
+            plt.ylabel('Count')
+            plt.grid()
+            plt.tight_layout()
+
+            # Display the plot
+            display(plt, target="result_area")
+    
+    
+    display("Full Results:", target="result_area")  
     display(filtered_data, target="result_area")
-
-    # Group by a column and show the count
-    group_data = filtered_data.groupby('BASE_PROVINCE_OR_STATE_E').count()[['MARK']]
-    display(group_data, target="result_area")
-
-    # Plot the data
-    ax = filtered_data.groupby('BASE_PROVINCE_OR_STATE_E').count()['MARK'].plot.bar()
-    plt.title(f"Count per Province for Model {user_input_MODEL_NAME}")
-    plt.xlabel('Province')
-    plt.ylabel('Count')
-    plt.grid()
-    plt.tight_layout()
-
-    # Display the plot
-    display(plt, target="result_area")
 
 # Attach the event handler to the button click
 document.getElementById("runButton").onclick = run_func
