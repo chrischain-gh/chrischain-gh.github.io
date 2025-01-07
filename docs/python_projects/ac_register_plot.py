@@ -2,7 +2,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from pyscript import display
 from pyscript import document
+import warnings
 
+warnings.filterwarnings("ignore")
 
 df_ccarscurr = pd.read_csv("carscurr.txt",
                             encoding = "ISO-8859-1",
@@ -49,6 +51,9 @@ df_ccars_merged = pd.merge(df_ccarscurr,
                            right_on='MARK_LINK',
                            suffixes=('', '_ownr'))
 
+document.getElementById("result_area").innerHTML = " <br>READY FOR USE!<br>" 
+
+
 # Define the function that gets called when the button is clicked
 def run_func(e):
     
@@ -56,26 +61,26 @@ def run_func(e):
     document.getElementById("result_area").innerHTML = ""  # Clear the result div
     
     # Get the input value from the HTML element using PyScript's access
-    user_input_MARK = document.getElementById("userInputMARK").value
-    user_input_COMMON_NAME = document.getElementById("userInputCOMMON_NAME").value
-    user_input_MODEL_NAME = document.getElementById("userInputMODEL_NAME").value
-    user_input_BASE_PROVINCE_OR_STATE_E = document.getElementById("userInputBASE_PROVINCE_OR_STATE_E").value
-    user_input_FULL_NAME = document.getElementById("userInputFULL_NAME").value
-    user_input_OWNER_NAME_OLD_FORMAT = document.getElementById("userInputOWNER_NAME_OLD_FORMAT").value
+    user_input_MARK = document.getElementById("userInputMARK").value.casefold()
+    user_input_COMMON_NAME = document.getElementById("userInputCOMMON_NAME").value.casefold()
+    user_input_MODEL_NAME = document.getElementById("userInputMODEL_NAME").value.casefold()
+    user_input_BASE_PROVINCE_OR_STATE_E = document.getElementById("userInputBASE_PROVINCE_OR_STATE_E").value.casefold()
+    user_input_FULL_NAME = document.getElementById("userInputFULL_NAME").value.casefold()
+    user_input_OWNER_NAME_OLD_FORMAT = document.getElementById("userInputOWNER_NAME_OLD_FORMAT").value.casefold()
     
     query_string = []
     if user_input_MARK:
-        query_string.append(f'(df_ccars_merged[\'MARK\'].str.contains(\'{user_input_MARK}\'))')
+        query_string.append(f'(df_ccars_merged[\'MARK\'].str.casefold().str.str.contains(\'{user_input_MARK}\'))')
     if user_input_COMMON_NAME:
-        query_string.append(f'(df_ccars_merged[\'COMMON_NAME\'].str.contains(\'{user_input_COMMON_NAME}\'))')
+        query_string.append(f'(df_ccars_merged[\'COMMON_NAME\'].str.casefold().str.contains(\'{user_input_COMMON_NAME}\'))')
     if user_input_MODEL_NAME:
-        query_string.append(f'(df_ccars_merged[\'MODEL_NAME\'].str.contains(\'{user_input_MODEL_NAME}\'))')
+        query_string.append(f'(df_ccars_merged[\'MODEL_NAME\'].str.casefold().str.contains(\'{user_input_MODEL_NAME}\'))')
     if user_input_BASE_PROVINCE_OR_STATE_E:
-        query_string.append(f'(df_ccars_merged[\'BASE_PROVINCE_OR_STATE_E\'].str.contains(\'{user_input_BASE_PROVINCE_OR_STATE_E}\'))')
+        query_string.append(f'(df_ccars_merged[\'BASE_PROVINCE_OR_STATE_E\'].str.casefold().str.contains(\'{user_input_BASE_PROVINCE_OR_STATE_E}\'))')
     if user_input_FULL_NAME:
-        query_string.append(f'(df_ccars_merged[\'FULL_NAME\'].str.contains(\'{user_input_FULL_NAME}\'))')
+        query_string.append(f'(df_ccars_merged[\'FULL_NAME\'].str.casefold().str.contains(\'{user_input_FULL_NAME}\'))')
     if user_input_OWNER_NAME_OLD_FORMAT:
-        query_string.append(f'(df_ccars_merged[\'OWNER_NAME_OLD_FORMAT\'].str.contains(\'{user_input_OWNER_NAME_OLD_FORMAT}\'))')
+        query_string.append(f'(df_ccars_merged[\'OWNER_NAME_OLD_FORMAT\'].str.casefold().str.contains(\'{user_input_OWNER_NAME_OLD_FORMAT}\'))')
     
     # If the input is empty, do nothing
     if query_string == []:
