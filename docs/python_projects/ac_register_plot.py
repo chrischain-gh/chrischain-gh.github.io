@@ -104,9 +104,15 @@ def run_func(e):
                   'BASE_PROVINCE_OR_STATE_E',
                   'FULL_NAME',
                   'OWNER_NAME_OLD_FORMAT']:
+        
         display(f"{value} Info:", target="result_area")
-        # Group by a column and show the count
-        group_data = filtered_data.groupby(value).count()[['MARK']].sort_values(by='MARK', ascending=False)
+        if value in ['FULL_NAME', 'OWNER_NAME_OLD_FORMAT'] and filtered_data.shape[0] > 20:
+            group_data = filtered_data.groupby(value).count()[['MARK']].sort_values(by='MARK', ascending=False)
+            group_data = group_data[group_data['MARK']>1]
+        else:
+            # Group by a column and show the count
+            group_data = filtered_data.groupby(value).count()[['MARK']].sort_values(by='MARK', ascending=False)
+        
         display(group_data.reset_index(), target="result_area")
 
         # Plot the data
