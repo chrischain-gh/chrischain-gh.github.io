@@ -62,5 +62,9 @@ def lancair_360_build_manual():
 def lancair_legacy_build_manual():
     return render_template('lancair_legacy_build/lancair_legacy_build_manual.html')
 
+@app.route('/soundsystem/build.html')
+def soundsystem_build():
+    return render_template('soundsystem/build.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
