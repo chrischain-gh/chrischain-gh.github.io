@@ -66,5 +66,9 @@ def lancair_legacy_build_manual():
 def soundsystem_build():
     return render_template('soundsystem/build.html')
 
+@app.route('/aircraft/CFCND.html')
+def aircraft_cfcnd():
+    return render_template('aircraft/CFCND.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
