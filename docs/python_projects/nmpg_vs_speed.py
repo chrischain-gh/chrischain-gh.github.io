@@ -35,4 +35,16 @@ plt.legend(loc='upper left', bbox_to_anchor=(1,1),
            ncol=1, fancybox=True, shadow=True)
 plt.grid()
 plt.tight_layout()
+plt.ylim(None, 45)
+display(plt)
+
+plt.figure(figsize=(16, 8))
+
+agg_ac_perf_df.groupby('Model')['Seat NMPG'].plot(style='o', markersize=4, legend=True)
+plt.title('Seat NMPG vs. Speed for Various Aircraft')
+plt.xlabel('Speed [kts]')
+plt.xticks(range(0,300,10))
+plt.ylabel('Seat NMPG [Seat*NM/gal]')
+plt.grid()
+plt.tight_layout()
 display(plt)
