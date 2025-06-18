@@ -50,10 +50,6 @@ def aircraft_pipe_dreams():
 def zenith_build_study():
     return render_template('zenith_build_study.html')
 
-@app.route('/housing_studies/mortgage_planning.html')
-def mortgage_planning():
-    return render_template('housing_studies/mortgage_planning.html')
-
 @app.route('/lancair_360_build/lancair_360_build_manual.html')
 def lancair_360_build_manual():
     return render_template('lancair_360_build/lancair_360_build_manual.html')
