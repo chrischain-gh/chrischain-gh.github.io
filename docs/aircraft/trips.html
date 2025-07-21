@@ -77,9 +77,9 @@
         <div class="dropdown">
             <button class="dropbtn">Python Projects</button>
             <div class="dropdown-content">
-            <a href="aircraft_mpg.html">Aircraft MPG</a>
-            <a href="pyscript_test_aircraft_mpg.html">PyScript Test: Aircraft MPG</a>
-            <a href="regsearch.html">RegSearch</a>
+            <a href="../python_projects/aircraft_mpg.html">Aircraft MPG</a>
+            <a href="../python_projects/pyscript_test_aircraft_mpg.html">PyScript Test: Aircraft MPG</a>
+            <a href="../python_projects/regsearch.html">RegSearch</a>
             </div>
         </div> 
 
@@ -108,82 +108,78 @@
         <div class="dropdown">
             <button class="dropbtn">Aircraft</button>
             <div class="dropdown-content">
-            <a href="../aircraft/CFCND.html">C-FCND</a>
-            <a href="../aircraft/trips.html">Aircraft Trips</a>
+            <a href="CFCND.html">C-FCND</a>
+            <a href="trips.html">Aircraft Trips</a>
             </div>
         </div>
 
 
 
         
-    <!-- Recommended meta tags -->
-    <!--<meta charset="UTF-8"> -->
-    <!--<meta name="viewport" content="width=device-width,initial-scale=1.0">-->
-    <!-- PyScript CSS -->
-    <link rel="stylesheet" href="https://pyscript.net/releases/2024.11.1/core.css">
-    <!-- This script tag bootstraps PyScript -->
-    <script type="module" src="https://pyscript.net/releases/2024.11.1/core.js?v=3"></script>
-    <!--TODO: MOVE CACHE BUSTER VERSION TO MAIN FILE AND TO AN UPDATE DATE-->
-
-    <!-- for splashscreen -->
-    <style>
-        #loading { outline: none; border: none; background: transparent }
-    </style>
-    <script type="module">
-        const loading = document.getElementById('loading');
-        addEventListener('py:ready', () => loading.close());
-        loading.showModal();
-    </script>
-
-    <!-- style for spinner and canvas -->
-    <style>
-        .loading {
-            display: inline-block;
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: black;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        canvas {
-            display: none;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-    </style>
+<h1>Aircraft Trips</h1>
 
     </head>
 
     <body>
         
+<h2>August 2025 - C175 to Arviat, NU?</h2>
 
-<dialog id="loading">
-    <h1>Loading...</h1>
-</dialog>
+The trip would be completed weather dependent on the weeks between Aug 4th 2025 to Sept 8th 2025.<br>
+It is not necessary to flight all legs but instead just try to push as far as safely possible and with enough time to return safely.<br>
 
-<!-- Your input and button here -->
-<h1>Canadian Aircraft Register Search</h1>
+Leg 1: CYRP -> CYYB -> CYTS (310 NM, ~ 2.8 hrs)<br>
+Leg 2: CYTS -> CYGQ -> CYPL (390 NM, ~ 3.5 hrs)<br>
+Leg 3: CYPL -> CJT3 -> CYGX (353 NM, ~ 3.2 hrs)<br>
+Leg 4: CYGX -> CYYQ -> CYEK (299 NM, ~ 2.7 hrs)<br>
+<br>
+Leg 5: CYEK -> CYYQ -> CYGX (299 NM, ~ 2.7 hrs)<br>
+Leg 6: CYGX -> CJT3 -> CYPL (353 NM, ~ 3.2 hrs)<br>
+Leg 7: CYPL -> CYGQ -> CYTS (390 NM, ~ 3.5 hrs)<br>
+Leg 8: CYTS -> CYYB -> CYRP (310 NM, ~ 2.8 hrs)<br>
+<br>
+Total baseline flgiht time: 24.4 hrs, at $225/hr then ~$5500 (just aicraft operating costs)<br>
+<br>
+Possible add on visits, time and wind/performance permiting:<br>
+- Stop in CYYQ, Churchill<br>
+- Stop in CYGQ, Geraldton<br>
+- Deviation to Kenora, CYQK?<br>
+<br>
+Usable Fuel, Main Tanks: 43 Gallons<br>
+Assumd Usable Fuel, Aux Fuel Tank: 15 Gallons<br>
+Assumed Fuel Capacity for Flight: 58 Gallons<br>
+At worst case 13 GPH, ~ 4.5 hours of flight time total.<br>
+At worst case 13 GPH and no aux fuel tank use, ~ 3.3 hours flight time total.<br>
+Realistically, at 11 GPH and no aux fuel tank use, ~ 3.9 hours flight time total.<br>
+Realistically, at 11 GPH, 5.3 hours flight time total.<br>
+None of these are considering reserves on landing, though, to be clear.<br>
+<br>
+All airports listed in the legs above (EXCEPT for CYYQ) should have 100LL.<br>
+<br>
+Available weight left with full fuel (wings and aux) and 2x 180 lbs pilots: 110 lbs<br>
+<br>
+Best places to get into town and/or sleep:<br>
+- Gillam (close walk to town, camping loosk possible)<br>
+- Arviat (close walk to town, camping looks possible)<br>
+- Geraldton (camping looks possible but not walk to town, only to lake)<br>
+<br>
 
-<!-- Entry box for user input -->
-<input type="text" id="userInputMARK" placeholder="Enter MARK value" />
-<input type="text" id="userInputCOMMON_NAME" placeholder="Enter COMMON_NAME value" />
-<input type="text" id="userInputMODEL_NAME" placeholder="Enter MODEL_NAME value" />
-<input type="text" id="userInputBASE_PROVINCE_OR_STATE_E" placeholder="Enter BASE_PROVINCE_OR_STATE_E value" />
-<input type="text" id="userInputFULL_NAME" placeholder="Enter FULL_NAME value" />
-<input type="text" id="userInputOWNER_NAME_OLD_FORMAT" placeholder="Enter OWNER_NAME_OLD_FORMAT value" />
+Necessary Items:
+- Oil
+- Oil Funnel
+- Fuel Gloves
+- iPad
+- Kneepad
+- Battery bank
+- Cig Lighter charger
+- Working Pens
+- Spare batteries
+- Tent
+- Survival Kit
+- SOS Device
+- Mini ladder for fueling?
+- Jerry cans or bladders?
 
-<button id="runButton" type="submit" py-click="run_func">Run Function</button>
-<!-- your code goes here... -->
-<div id="result_area">
-    <p>LOADING, PLEASE WAIT PATIENTLY</p>
-<script type="py" src="./ac_register_plot.py" config="./regsearch_config.toml"></script>
-</div>
+
 
 
 

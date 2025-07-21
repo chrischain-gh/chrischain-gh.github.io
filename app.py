@@ -66,5 +66,9 @@ def soundsystem_build():
 def aircraft_cfcnd():
     return render_template('aircraft/CFCND.html')
 
+@app.route('/aircraft/trips.html')
+def aircraft_trips():
+    return render_template('aircraft/trips.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
