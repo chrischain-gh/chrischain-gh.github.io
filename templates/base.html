@@ -130,6 +130,19 @@
         <h3>Menu</h3>
         <ul>
             <li><a href="{{ url_for('index') }}">Home Page</a></li>
+            <li>Resumes
+                <ul>
+                <li><a href="{{ url_for('resume_aviation') }}">Aviation Resume</a></li>
+                <li><a href="{{ url_for('music_resume') }}">Music Resume</a></li>
+                </ul>
+            </li>
+            <li>Python Projects
+                <ul>
+                <li><a href="{{ url_for('aircraft_mpg') }}">Aircraft MPG</a></li>
+                <li><a href="{{ url_for('pyscript_test_aircraft_mpg') }}">PyScript Test: Aircraft MPG</a></li>
+                <li><a href="{{ url_for('regsearch') }}">RegSearch</a></li>
+                </ul>
+            </li>
             <li><a href="{{ url_for('account_links') }}">Profile Links</a></li>
             <li><a href="{{ url_for('ig_links') }}">Instagram Post Links</a></li>
             <li><a href="{{ url_for('photography') }}">Photography</a></li>
