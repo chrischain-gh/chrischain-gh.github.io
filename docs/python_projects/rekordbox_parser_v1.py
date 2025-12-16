@@ -4,6 +4,8 @@ import xml.etree.ElementTree as ET
 from urllib.parse import unquote
 from pyscript import display
 
+pd.set_option('display.max_rows', None)
+
 def find_tracks_with_bitrate(xml_path, target_bitrate=128):
     tree = ET.parse(xml_path)
     root = tree.getroot()
@@ -47,8 +49,9 @@ tracks_128 = find_tracks_with_bitrate(xml_file, 128)
 print(f"Found {len(tracks_128)} tracks with BitRate = 128:\n")
 
 for t in tracks_128:
-    display(f"- {t['name']} | {t['artist']} | {t['bitrate']} kbps")
-    display(f"  {t['location']}\n")
+    #display(f"- {t['name']} | {t['artist']} | {t['bitrate']} kbps")
+    #display(f"  {t['location']}\n")
+    pass
     
 df = pd.DataFrame(tracks_128)
 
