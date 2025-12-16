@@ -38,6 +38,10 @@ def aircraft_mpg():
 def regsearch():
     return render_template('python_projects/regsearch.html')
 
+@app.route('/python_projects/rekordbox_parser.html')
+def rekordbox_parser():
+    return render_template('python_projects/rekordbox_parser.html')
+
 @app.route('/python_projects/pyscript_test_aircraft_mpg.html')
 def pyscript_test_aircraft_mpg():
     return render_template('python_projects/pyscript_test_aircraft_mpg.html')

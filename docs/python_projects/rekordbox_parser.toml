@@ -1,0 +1,6 @@
+name = "Folium"
+description = "A simple application that uses pandas and folium to draw heatmaps on a map."
+packages = ["pandas"]
+
+[files]
+"./sample_rekordbox/2025-12-13_backup.xml" = ""
