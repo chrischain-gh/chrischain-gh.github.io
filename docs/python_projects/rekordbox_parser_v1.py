@@ -1,70 +1,80 @@
 import pandas as pd
-#import matplotlib.pyplot as plt
 import xml.etree.ElementTree as ET
 from urllib.parse import unquote
-from pyscript import display
+from pyscript import display, document
+from js import window
 
 pd.set_option('display.max_rows', None)
 
-def find_tracks_with_bitrate(xml_path, target_bitrate=128):
-    tree = ET.parse(xml_path)
-    root = tree.getroot()
+
+def find_tracks_with_bitrate_from_text(xml_text, target_bitrate=128):
+    root = ET.fromstring(xml_text)
 
     matching_tracks = []
 
-    # Iterate over all TRACK elements
     for track in root.iter("TRACK"):
         bitrate = track.attrib.get("BitRate")
 
-        # BitRate is stored as a string
         if bitrate is not None and int(bitrate) == target_bitrate:
-            name = track.attrib.get("Name", "")
-            artist = track.attrib.get("Artist", "")
-            album = track.attrib.get("Album", "")
-            location = track.attrib.get("Location", "")
+            attrib = track.attrib.copy()
 
-            # Decode file URL for readability
+            location = attrib.get("Location", "")
             if location.startswith("file://"):
-                location = unquote(location.replace("file://localhost", ""))
+                attrib["Location"] = unquote(
+                    location.replace("file://localhost", "")
+                )
 
-            matching_tracks.append({
-                "name": name,
-                "artist": artist,
-                "bitrate": bitrate,
-                "album": album,
-                "location": location
-            })
+            attrib["BitRate"] = int(attrib["BitRate"])
+
+            matching_tracks.append(attrib)
 
     return matching_tracks
 
 
+def run_func(e=None):
+    file_input = document.getElementById("fileInput")
 
-xml_file = "2025-12-13_backup.xml"  # <-- path to your XML export
+    if not file_input.files.length:
+        display("No file selected")
+        return
+
+    file = file_input.files.item(0)
+
+    reader = window.FileReader.new()
+
+    def onload(evt):
+        xml_text = evt.target.result
+
+        tracks_128 = find_tracks_with_bitrate_from_text(xml_text, 128)
+
+        display(f"Found {len(tracks_128)} tracks with BitRate = 128")
+
+        df = pd.DataFrame(tracks_128)
+
+        df = df.rename(columns={
+            "Name": "Name",
+            "Artist": "Artist",
+            "Album": "album",
+            "BitRate": "Bitrate (kbps)",
+            "Location": "File Path"
+        })
+
+        df = df[[
+            "Name", "Artist", "album",
+            "Bitrate (kbps)", "File Path"
+        ]]
+
+        display(df)
+
+        display(
+            df.groupby(["Artist", "album"])
+              .count()["Name"]
+              .sort_values(ascending=False)
+              .to_frame()
+        )
+
+    reader.onload = onload
+    reader.readAsText(file)
 
 
-tracks_128 = find_tracks_with_bitrate(xml_file, 128)
-
-
-
-print(f"Found {len(tracks_128)} tracks with BitRate = 128:\n")
-
-for t in tracks_128:
-    #display(f"- {t['name']} | {t['artist']} | {t['bitrate']} kbps")
-    #display(f"  {t['location']}\n")
-    pass
-    
-df = pd.DataFrame(tracks_128)
-
-# Optional: nicer column order + names
-df = df.rename(columns={
-    "name": "Name",
-    "artist": "Artist",
-    "bitrate": "Bitrate (kbps)",
-    "location": "File Path"
-})
-
-df = df[["Name", "Artist", "album", "Bitrate (kbps)", "File Path"]]
-
-display(df)
-
-display(df.groupby(['Artist', 'album']).count()['Name'].sort_values(ascending=False).to_frame())
+document.getElementById("runButton").onclick = run_func
