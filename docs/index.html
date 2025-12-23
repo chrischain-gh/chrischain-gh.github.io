@@ -180,7 +180,7 @@ body.dark a {
         </div>
 
         <label class="toggle-switch">
-    <input type="checkbox" onchange="toggleDarkMode(this)">
+    <input type="checkbox" id="darkToggle" onchange="toggleDarkMode(this)">
     <span class="slider"></span>
 </label>
 
@@ -195,10 +195,22 @@ body.dark a {
 Welcome to my work in progress website.<br></br>
 
 
-    <script>
+<script>
 function toggleDarkMode(toggle) {
-    document.body.classList.toggle("dark", toggle.checked);
+    const isDark = toggle.checked;
+    document.body.classList.toggle("dark", isDark);
+    localStorage.setItem("theme", isDark ? "dark" : "light");
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    const savedTheme = localStorage.getItem("theme");
+    const toggle = document.getElementById("darkToggle");
+
+    if (savedTheme === "dark") {
+        document.body.classList.add("dark");
+        if (toggle) toggle.checked = true;
+    }
+});
 </script>
 
     </body>  
