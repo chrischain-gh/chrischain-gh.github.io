@@ -120,7 +120,22 @@ body.dark {
 body.dark a {
     color: #9ecbff;
 }
-        </style>
+
+body.dark table {
+    background-color: #111; /* table background */
+    color: white;           /* text */
+}
+
+body.dark tr:nth-child(even) {
+    background-color: #222; /* alternating row background */
+}
+
+body.dark td, 
+body.dark th {
+    color: white;           /* force text color */
+    border-color: #555;     /* optional: borders */
+}
+</style>
             
         <div class="dropdown">
             <button class="dropbtn">Home</button>
