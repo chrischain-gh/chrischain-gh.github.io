@@ -55,6 +55,71 @@
         tr:nth-child(even) {
         background-color: #dddddd;
         }
+
+
+        /* Container for the toggle */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+/* Hide default checkbox */
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The track */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    background-color: #ccc;
+    border-radius: 24px;
+    width: 100%;
+    height: 100%;
+    transition: background-color 0.3s;
+}
+
+/* The circular slider */
+.slider::before {
+    content: "";
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    bottom: 2px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s;
+}
+
+/* Toggled state */
+.toggle-switch input:checked+.slider {
+    background-color: #4caf50;
+}
+
+.toggle-switch input:checked+.slider::before {
+    transform: translateX(26px);
+}
+
+/* Light / Dark mode */
+body {
+    background-color: white;
+    color: black;
+}
+
+body.dark {
+    background-color: black;
+    color: white;
+}
+
+/* Optional: make links readable in dark mode */
+body.dark a {
+    color: #9ecbff;
+}
         </style>
             
         <div class="dropdown">
@@ -114,6 +179,10 @@
             </div>
         </div>
 
+        <label class="toggle-switch">
+    <input type="checkbox" onchange="toggleDarkMode(this)">
+    <span class="slider"></span>
+</label>
 
 
         
@@ -125,6 +194,8 @@
         
 <h3>Page Contents</h3>
         <ul>
+            <li><a href="#december-2025-update">DECEMBER 2025 UPDATE</a></li>
+            <li><a href="#november-2025-update">NOVEMBER 2025 UPDATE</a></li>
             <li><a href="#october-2025-update">OCTOBER 2025 UPDATE</a></li>
             <li><a href="#september-2025-update">SEPTEMBER 2025 UPDATE</a></li>
             <li><a href="#august-2025-update">AUGUST 2025 UPDATE</a></li>
@@ -139,7 +210,8 @@ Amp/rack/electronics setup:<br>
 - Sub amp - Admark AD420: $1376.80 CAD<br>
 - DSP(s) - Xilica 4080 + DAP 4080: $1052.65 CAD<br>
 - Rack/case: $699.99 CAD<br>
-- Current Total: $3129.44<br>
+<br>
+<b>Current Total: $3129.44</b><br>
 Still Need: another amp(s) (EST. $1400+), EQ ($500), power distro (EST. $1000)<br>
 <br>
 DIY Subs:<br>
@@ -149,17 +221,27 @@ DIY Subs:<br>
 - Paint<br>
 - Hardware<br>
 - Mess Ups<br>
-- Current Total: $5565.41 ESIMATED<br>
 <br>
-Incidentals:<br>
-- <br>
+<b>Current Total: $5565.41 ESIMATED</b><br>
 <br>
 Mid/High Speakers:<br>
+- Drivers: Estimating $4000+
+- 2x Cut Wood Flat Packs + 3D Printed Throat = $3011.71 CAD<br>
+- Paint<br>
+- Hardware<br>
+<br>
+Incidentals:<br>
 - <br>
 <br>
 
 <h1 id="december-2025-update">DECEMBER 2025 UPDATE</h1>
 
+- bought 2x JMOD flat packs (TBD but ~$3011.71 CAD... yeah, ouch)<br>
+- need to decide between 8 and 16 ohm drivers for NDL88s... so either resultant load of 4 ohms or 8 ohms and need 2800 W for the resultant pair<br>
+- Thinking of this type amp setup for JMODs:<br>
+      &emsp;- 2 channels of 2800+ watts for 12NDL88s (possibly AD406 at 4 ohms 2x 3740W or AD410 at 8 ohms 2x 3400W)<br>
+      &emsp;- 4 channels of 220+ watts, with DSP, for DCX464 (possibly QSC PLD4.2?)<br>
+<br>
 <table border="1" cellpadding="8" cellspacing="0">
   <thead>
     <tr>
@@ -1057,6 +1139,12 @@ Cubo 15:<br>
 <p><a href="https://www.powersoft.com/en/products/touring-amps/t-series/#1663662106078-f99ce683-5a33">Powersoft T-Series Amplifiers</a></p>
 
 
+
+    <script>
+function toggleDarkMode(toggle) {
+    document.body.classList.toggle("dark", toggle.checked);
+}
+</script>
 
     </body>  
 
