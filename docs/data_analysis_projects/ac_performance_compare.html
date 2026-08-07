@@ -162,49 +162,49 @@
         <div class="dropdown">
             <button class="dropbtn">Resumes</button>
             <div class="dropdown-content">
-            <a href="resumes/resume_aviation.html">Aviation Resume</a>
-            <a href="resumes/music_resume.html">Music Resume</a>
+            <a href="../resumes/resume_aviation.html">Aviation Resume</a>
+            <a href="../resumes/music_resume.html">Music Resume</a>
             </div>
         </div> 
 
         <div class="dropdown">
             <button class="dropbtn">Python Projects</button>
             <div class="dropdown-content">
-            <a href="python_projects/aircraft_mpg.html">Aircraft MPG</a>
-            <a href="python_projects/pyscript_test_aircraft_mpg.html">PyScript Test: Aircraft MPG</a>
-            <a href="python_projects/regsearch.html">RegSearch</a>
-            <a href="python_projects/rekordbox_parser.html">Rekordbox Parser</a>
+            <a href="../python_projects/aircraft_mpg.html">Aircraft MPG</a>
+            <a href="../python_projects/pyscript_test_aircraft_mpg.html">PyScript Test: Aircraft MPG</a>
+            <a href="../python_projects/regsearch.html">RegSearch</a>
+            <a href="../python_projects/rekordbox_parser.html">Rekordbox Parser</a>
             </div>
         </div> 
 
         <div class="dropdown">
             <button class="dropbtn">Data Analysis Projects</button>
             <div class="dropdown-content">
-            <a href="data_analysis_projects/ac_performance_compare.html">Aircraft Performance Comparisons</a>
+            <a href="ac_performance_compare.html">Aircraft Performance Comparisons</a>
             </div>
         </div> 
 
         <div class="dropdown">
             <button class="dropbtn">Aircraft Studies</button>
             <div class="dropdown-content">
-            <a href="zenith_build_study.html">Zenith Build Study</a>
-            <a href="lancair_360_build/lancair_360_build_manual.html">Lancair 320/360 Build Manual</a>
-            <a href="lancair_legacy_build/lancair_legacy_build_manual.html">Lancair Legacy Build Manual</a>
+            <a href="../zenith_build_study.html">Zenith Build Study</a>
+            <a href="../lancair_360_build/lancair_360_build_manual.html">Lancair 320/360 Build Manual</a>
+            <a href="../lancair_legacy_build/lancair_legacy_build_manual.html">Lancair Legacy Build Manual</a>
             </div>
         </div>
 
         <div class="dropdown">
             <button class="dropbtn">Soundsystem</button>
             <div class="dropdown-content">
-            <a href="soundsystem/build.html">System and/or Build Planning</a>
+            <a href="../soundsystem/build.html">System and/or Build Planning</a>
             </div>
         </div>
 
         <div class="dropdown">
             <button class="dropbtn">Aircraft</button>
             <div class="dropdown-content">
-            <a href="aircraft/CFCND.html">C-FCND</a>
-            <a href="aircraft/trips.html">Aircraft Trips</a>
+            <a href="../aircraft/CFCND.html">C-FCND</a>
+            <a href="../aircraft/trips.html">Aircraft Trips</a>
             </div>
         </div>
 
@@ -233,72 +233,262 @@
 
 
         
-<h1>Video</h1>
+
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+
 
     </head>
 
     <body>
         
-<h2>Here are some of my videos:</h2>
 
-<iframe width="420" height="345" src="https://www.youtube.com/embed/5Z8UjWqMwYY"></iframe>
-<iframe width="420" height="345" src="https://www.youtube.com/embed/1mgW7wbOeFM"></iframe>
-<iframe width="420" height="345" src="https://www.youtube.com/embed/1MCtyFXeWxM"></iframe>
-<iframe width="420" height="345" src="https://www.youtube.com/embed/7vhkFqub7as"></iframe>
-<iframe width="420" height="345" src="https://www.youtube.com/embed/f2wGlco3aTU"></iframe>
-<iframe width="420" height="345" src="https://www.youtube.com/embed/zLyzZKJXqgA"></iframe>
-<iframe width="420" height="345" src="https://www.youtube.com/embed/7kT61u5VaxI"></iframe>
-<iframe width="420" height="345" src="https://www.youtube.com/embed/QIOH8rTfAS8"></iframe>
-<iframe width="420" height="345" src="https://www.youtube.com/embed/1AVy5lY5ftE"></iframe>
-<iframe width="420" height="345" src="https://www.youtube.com/embed/DO7ASsemJQ8"></iframe>
-<iframe width="420" height="345" src="https://www.youtube.com/embed/iVcRn6vN1Ao"></iframe>
-<iframe width="420" height="345" src="https://www.youtube.com/embed/lzXZSIYzn0M"></iframe>
+<h2>Trip Time vs Speed</h2>
+<div id="timePlot" style="width:100%;height:700px;"></div>
+
+<h2>Fuel Required vs Speed (800 NM Trip)</h2>
+<div id="fuelPlot" style="width:100%;height:700px;"></div>
+
+<h2>NMPG vs Speed</h2>
+<div id="nmpgPlot" style="width:100%;height:700px;"></div>
+
+<h2>Passenger Efficiency vs Speed</h2>
+<div id="passengerPlot" style="width:100%;height:700px;"></div>
+
+<h2>Time vs Fuel Used (800 NM Trip)</h2>
+<div id="timeFuelPlot" style="width:100%;height:700px;"></div>
+
+<script>
+
+// =====================================================
+// Inputs
+// =====================================================
+
+const distances = [400, 800, 1200, 1600];
+
+const speeds = Array.from(
+    {length:22},
+    (_,i)=>95+i*5
+);
+
+const defaultTripDistance = 800;
+
+
+// =====================================================
+// Aircraft cruise mode definitions
+// =====================================================
+
+const aircraft = [
+
+{
+    name:"Rebel Murphy",
+    passengers:2,
+
+    modes:[
+        {name:"Economy", speed:95, gph:4},
+        {name:"Normal", speed:105, gph:5},
+        {name:"Max Cruise", speed:115, gph:7}
+    ]
+},
+
+{
+    name:"Glasair I-II",
+    passengers:2,
+
+    modes:[
+        {name:"Economy", speed:155, gph:7},
+        {name:"Normal", speed:165, gph:8},
+        {name:"Max Cruise", speed:175, gph:10}
+    ]
+},
+
+{
+    name:"Lancair 320-360",
+    passengers:2,
+
+    modes:[
+        {name:"Economy", speed:170, gph:7},
+        {name:"Normal", speed:180, gph:8},
+        {name:"Max Cruise", speed:190, gph:10}
+    ]
+},
+
+{
+    name:"Q200",
+    passengers:1,
+
+    modes:[
+        {name:"Economy", speed:155, gph:4},
+        {name:"Normal", speed:170, gph:5},
+        {name:"Max Cruise", speed:180, gph:6}
+    ]
+},
+
+{
+    name:"Long EZ",
+    passengers:2,
+
+    modes:[
+        {name:"Economy", speed:125, gph:4},
+        {name:"Normal", speed:135, gph:5},
+        {name:"Max Cruise", speed:140, gph:6}
+    ]
+}
+
+];
+
+
+// =====================================================
+// Plot 1: Fuel Required vs Speed (800 NM)
+// =====================================================
+
+const gphValues=[
+    4,5,6,7,8,9,10,11,12,13
+];
+
+let fuelTraces = gphValues.map(gph=>({
+
+    x:speeds,
+
+    y:speeds.map(speed =>
+        defaultTripDistance/speed*gph
+    ),
+
+    mode:"lines+markers",
+
+    name:`${gph} GPH`
+
+}));
+
+
+function createFuelEnvelope(ac){
+
+let x=[];
+let y=[];
+
+    ac.modes.forEach(mode=>{
+
+        x.push(mode.speed);
+
+        y.push(
+            defaultTripDistance/mode.speed*mode.gph
+        );
+
+    });
+
+
+    [...ac.modes].reverse().forEach(mode=>{
+
+        x.push(mode.speed);
+
+        y.push(
+            defaultTripDistance/mode.speed*(mode.gph+1)
+        );
+
+    });
+
+
+    x.push(x[0]);
+    y.push(y[0]);
+
+
+    return {
+
+        x:x,
+        y:y,
+
+        mode:"lines",
+
+        fill:"toself",
+
+        name:`${ac.name} envelope`,
+
+        opacity:0.35
+
+    };
+
+}
+
+
+
+aircraft.forEach(ac=>{
+
+    fuelTraces.push(
+        createFuelEnvelope(ac)
+    );
+
+});
+
+
+
+Plotly.newPlot(
+"fuelPlot",
+fuelTraces,
+{
+
+title:"Fuel Required vs Cruise Speed (800 NM Trip)",
+
+xaxis:{
+    title:"Cruise Speed (kt)"
+},
+
+yaxis:{
+    title:"Fuel Required (gal)"
+},
+
+hovermode:"x unified",
+
+template:"plotly_white"
+
+});
+
+</script>
+
 
     </body>  
 
     <aside>
         <br>
-        <a href="index.html">Back to home page</a>
+        <a href="../index.html">Back to home page</a>
 
         <h3>Menu</h3>
         <ul>
-            <li><a href="index.html">Home Page</a></li>
+            <li><a href="../index.html">Home Page</a></li>
             <li>Resumes
                 <ul>
-                <li><a href="resumes/resume_aviation.html">Aviation Resume</a></li>
-                <li><a href="resumes/music_resume.html">Music Resume</a></li>
+                <li><a href="../resumes/resume_aviation.html">Aviation Resume</a></li>
+                <li><a href="../resumes/music_resume.html">Music Resume</a></li>
                 </ul>
             </li>
             <li>Python Projects
                 <ul>
-                <li><a href="python_projects/aircraft_mpg.html">Aircraft MPG</a></li>
-                <li><a href="python_projects/pyscript_test_aircraft_mpg.html">PyScript Test: Aircraft MPG</a></li>
-                <li><a href="python_projects/regsearch.html">RegSearch</a></li>
-                <li><a href="python_projects/rekordbox_parser.html">Rekordbox Parser</a></li>
+                <li><a href="../python_projects/aircraft_mpg.html">Aircraft MPG</a></li>
+                <li><a href="../python_projects/pyscript_test_aircraft_mpg.html">PyScript Test: Aircraft MPG</a></li>
+                <li><a href="../python_projects/regsearch.html">RegSearch</a></li>
+                <li><a href="../python_projects/rekordbox_parser.html">Rekordbox Parser</a></li>
                 </ul>
             </li>
             <li>Aircraft Studies
                 <ul>
-                <li><a href="zenith_build_study.html">Zenith Build Study</a></li>
-                <li><a href="lancair_360_build/lancair_360_build_manual.html">Lancair 320/360 Build Manual</a></li>
-                <li><a href="lancair_legacy_build/lancair_legacy_build_manual.html">Lancair Legacy Build Manual</a></li>
+                <li><a href="../zenith_build_study.html">Zenith Build Study</a></li>
+                <li><a href="../lancair_360_build/lancair_360_build_manual.html">Lancair 320/360 Build Manual</a></li>
+                <li><a href="../lancair_legacy_build/lancair_legacy_build_manual.html">Lancair Legacy Build Manual</a></li>
                 </ul>
             </li>
             <li>Soundsystem
                 <ul>
-                <li><a href="soundsystem/build.html">System and/or Build Planning</a></li>
+                <li><a href="../soundsystem/build.html">System and/or Build Planning</a></li>
                 </ul>
             </li>
             <li>Aircraft
                 <ul>
-                <li><a href="aircraft/CFCND.html">C-FCND</a></li>
-                <li><a href="aircraft/trips.html">Aircraft Trips</a></li>
+                <li><a href="../aircraft/CFCND.html">C-FCND</a></li>
+                <li><a href="../aircraft/trips.html">Aircraft Trips</a></li>
                 </ul>
             </li>
-            <li><a href="account_links.html">Profile Links</a></li>
-            <li><a href="ig_links.html">Instagram Post Links</a></li>
-            <li><a href="photography.html">Photography</a></li>
-            <li><a href="video.html">Video</a></li>
+            <li><a href="../account_links.html">Profile Links</a></li>
+            <li><a href="../ig_links.html">Instagram Post Links</a></li>
+            <li><a href="../photography.html">Photography</a></li>
+            <li><a href="../video.html">Video</a></li>
         </ul>
     </aside>
 

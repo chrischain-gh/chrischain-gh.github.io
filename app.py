@@ -30,6 +30,10 @@ def resume_aviation():
 def music_resume():
     return render_template('resumes/music_resume.html')
 
+@app.route('/data_analysis_projects/ac_performance_compare.html')
+def ac_perf_compare_js():
+    return render_template('data_analysis_projects/ac_performance_compare.html')
+
 @app.route('/python_projects/aircraft_mpg.html')
 def aircraft_mpg():
     return render_template('python_projects/aircraft_mpg.html')
