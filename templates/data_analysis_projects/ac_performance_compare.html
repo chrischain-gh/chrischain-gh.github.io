@@ -34,20 +34,49 @@
 </div>
 
 
-<h2>Trip Time vs Speed</h2>
-<div id="timePlot" style="width:100%;height:700px;"></div>
-
-<h2>Fuel Required vs Speed</h2>
-<div id="fuelPlot" style="width:100%;height:700px;"></div>
-
-<h2>NMPG vs Speed</h2>
-<div id="nmpgPlot" style="width:100%;height:700px;"></div>
-
-<h2>Passenger Efficiency vs Speed</h2>
-<div id="passengerPlot" style="width:100%;height:700px;"></div>
 
 <h2>Time vs Fuel Used</h2>
 <div id="timeFuelPlot" style="width:100%;height:700px;"></div>
+
+<div style="
+    display:flex;
+    width:100%;
+    gap:20px;
+    flex-wrap:wrap;
+">
+
+    <div style="flex:1 1 500px; min-width:0;">
+        <h2>Trip Time vs Speed</h2>
+        <div id="timePlot" style="width:100%;height:700px;"></div>
+    </div>
+
+    <div style="flex:1 1 500px; min-width:0;">
+        <h2>Fuel Required vs Speed</h2>
+        <div id="fuelPlot" style="width:100%;height:700px;"></div>
+    </div>
+
+</div>
+
+<div style="
+    display:flex;
+    width:100%;
+    gap:20px;
+    flex-wrap:wrap;
+">
+
+    <div style="flex:1 1 500px; min-width:0;">
+        <h2>NMPG vs Speed</h2>
+        <div id="nmpgPlot" style="width:100%;height:700px;"></div>
+    </div>
+
+    <div style="flex:1 1 500px; min-width:0;">
+        <h2>Passenger Efficiency vs Speed</h2>
+        <div id="passengerPlot" style="width:100%;height:700px;"></div>
+    </div>
+
+</div>
+
+
 
 
 <script>
@@ -122,6 +151,17 @@ const aircraft = [
         {name:"Economy", speed:125, gph:4},
         {name:"Normal", speed:135, gph:5},
         {name:"Max Cruise", speed:140, gph:6}
+    ]
+},
+
+{
+    name:"Cozy IV",
+    passengers:4,
+
+    modes:[
+        {name:"Economy", speed:160, gph:8},
+        {name:"Normal", speed:175, gph:9},
+        {name:"Max Cruise", speed:185, gph:10}
     ]
 }
 
@@ -340,7 +380,7 @@ function createFuelPlot(){
 
             yaxis:{
                 title:"Fuel Required (gal)",
-                dtick:2.5
+                dtick:5
             },
 
             hovermode:"x unified",
