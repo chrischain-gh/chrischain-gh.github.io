@@ -187,25 +187,28 @@ aircraft.forEach(ac=>{
 
 
 Plotly.newPlot(
-"fuelPlot",
-fuelTraces,
-{
+    "fuelPlot",
+    fuelTraces,
+    {
+        title:"Fuel Required vs Cruise Speed (800 NM Trip)",
 
-title:"Fuel Required vs Cruise Speed (800 NM Trip)",
+        xaxis:{
+            title:"Cruise Speed (kt)"
+        },
 
-xaxis:{
-    title:"Cruise Speed (kt)"
-},
+        yaxis:{
+            title:"Fuel Required (gal)"
+        },
 
-yaxis:{
-    title:"Fuel Required (gal)"
-},
+        hovermode:"x unified",
 
-hovermode:"x unified",
+        template:"plotly_dark"
+    },
+    {
+        responsive:true
+    }
+);
 
-template:"plotly_dark"
-
-});
 
 </script>
 
