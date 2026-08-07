@@ -234,7 +234,7 @@
 
         
 
-<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
 
     </head>
@@ -242,10 +242,36 @@
     <body>
         
 
+<!-- ===================================================== -->
+<!-- Global Trip Distance Slider -->
+<!-- ===================================================== -->
+
+<div style="margin-bottom:30px;">
+
+    <label for="distanceSlider">
+        <strong>
+            Trip Distance:
+            <span id="distanceValue">800</span> NM
+        </strong>
+    </label>
+
+    <input
+        type="range"
+        id="distanceSlider"
+        min="100"
+        max="2000"
+        step="100"
+        value="800"
+        style="width:100%;"
+    >
+
+</div>
+
+
 <h2>Trip Time vs Speed</h2>
 <div id="timePlot" style="width:100%;height:700px;"></div>
 
-<h2>Fuel Required vs Speed (800 NM Trip)</h2>
+<h2>Fuel Required vs Speed</h2>
 <div id="fuelPlot" style="width:100%;height:700px;"></div>
 
 <h2>NMPG vs Speed</h2>
@@ -254,8 +280,9 @@
 <h2>Passenger Efficiency vs Speed</h2>
 <div id="passengerPlot" style="width:100%;height:700px;"></div>
 
-<h2>Time vs Fuel Used (800 NM Trip)</h2>
+<h2>Time vs Fuel Used</h2>
 <div id="timeFuelPlot" style="width:100%;height:700px;"></div>
+
 
 <script>
 
@@ -263,14 +290,12 @@
 // Inputs
 // =====================================================
 
-const distances = [400, 800, 1200, 1600];
-
 const speeds = Array.from(
     {length:22},
     (_,i)=>95+i*5
 );
 
-const defaultTripDistance = 800;
+let defaultTripDistance = 800;
 
 
 // =====================================================
@@ -314,12 +339,12 @@ const aircraft = [
 
 {
     name:"Q200",
-    passengers:1,
+    passengers:2,
 
     modes:[
         {name:"Economy", speed:155, gph:4},
-        {name:"Normal", speed:170, gph:5},
-        {name:"Max Cruise", speed:180, gph:6}
+        {name:"Normal", speed:160, gph:5},
+        {name:"Max Cruise", speed:165, gph:6}
     ]
 },
 
@@ -338,111 +363,633 @@ const aircraft = [
 
 
 // =====================================================
-// Plot 1: Fuel Required vs Speed (800 NM)
+// Plot 1: Time vs Speed
 // =====================================================
 
-const gphValues=[
-    4,5,6,7,8,9,10,11,12,13
-];
+function createTimePlot(){
 
-let fuelTraces = gphValues.map(gph=>({
-
-    x:speeds,
-
-    y:speeds.map(speed =>
-        defaultTripDistance/speed*gph
-    ),
-
-    mode:"lines+markers",
-
-    name:`${gph} GPH`
-
-}));
+    let timeTraces = [];
 
 
-function createFuelEnvelope(ac){
+    timeTraces.push({
 
-let x=[];
-let y=[];
+        x:speeds,
 
-    ac.modes.forEach(mode=>{
+        y:speeds.map(speed =>
+            defaultTripDistance/speed
+        ),
 
-        x.push(mode.speed);
+        mode:"lines+markers",
 
-        y.push(
-            defaultTripDistance/mode.speed*mode.gph
+        name:`${defaultTripDistance} NM`
+
+    });
+
+
+    function createTimeEnvelopeAircraft(ac){
+
+        let x=[];
+        let y=[];
+
+
+        ac.modes.forEach(mode=>{
+
+            x.push(mode.speed);
+
+            y.push(
+                defaultTripDistance/mode.speed
+            );
+
+        });
+
+
+        [...ac.modes].reverse().forEach(mode=>{
+
+            x.push(mode.speed);
+
+            y.push(
+                defaultTripDistance/mode.speed*1.10
+            );
+
+        });
+
+
+        x.push(x[0]);
+        y.push(y[0]);
+
+
+        return {
+
+            x:x,
+            y:y,
+
+            mode:"lines",
+
+            fill:"toself",
+
+            name:`${ac.name} - ${defaultTripDistance} NM`,
+
+            opacity:0.25
+
+        };
+
+    }
+
+
+    aircraft.forEach(ac=>{
+
+        timeTraces.push(
+            createTimeEnvelopeAircraft(ac)
         );
 
     });
 
 
-    [...ac.modes].reverse().forEach(mode=>{
+    Plotly.newPlot(
+        "timePlot",
+        timeTraces,
+        {
 
-        x.push(mode.speed);
+            title:`Trip Time vs Cruise Speed (${defaultTripDistance} NM)`,
 
-        y.push(
-            defaultTripDistance/mode.speed*(mode.gph+1)
-        );
+            xaxis:{
+                title:"Cruise Speed (kt)",
+                dtick:5
+            },
 
-    });
+            yaxis:{
+                title:"Trip Time (hr)",
+                dtick:0.5
+            },
 
+            hovermode:"x unified",
 
-    x.push(x[0]);
-    y.push(y[0]);
+            template:"plotly_dark"
 
-
-    return {
-
-        x:x,
-        y:y,
-
-        mode:"lines",
-
-        fill:"toself",
-
-        name:`${ac.name} envelope`,
-
-        opacity:0.35
-
-    };
+        },
+        {
+            responsive:true
+        }
+    );
 
 }
 
 
+// =====================================================
+// Plot 2: Fuel Required vs Speed
+// =====================================================
 
-aircraft.forEach(ac=>{
+function createFuelPlot(){
 
-    fuelTraces.push(
-        createFuelEnvelope(ac)
+    const gphValues=[
+        4,5,6,7,8,9,10,11,12,13
+    ];
+
+
+    let fuelTraces = gphValues.map(gph=>({
+
+        x:speeds,
+
+        y:speeds.map(speed =>
+            defaultTripDistance/speed*gph
+        ),
+
+        mode:"lines+markers",
+
+        name:`${gph} GPH`
+
+    }));
+
+
+    function createFuelEnvelope(ac){
+
+        let x=[];
+        let y=[];
+
+
+        ac.modes.forEach(mode=>{
+
+            x.push(mode.speed);
+
+            y.push(
+                defaultTripDistance/mode.speed*mode.gph
+            );
+
+        });
+
+
+        [...ac.modes].reverse().forEach(mode=>{
+
+            x.push(mode.speed);
+
+            y.push(
+                defaultTripDistance/mode.speed*(mode.gph+1)
+            );
+
+        });
+
+
+        x.push(x[0]);
+        y.push(y[0]);
+
+
+        return {
+
+            x:x,
+            y:y,
+
+            mode:"lines",
+
+            fill:"toself",
+
+            name:`${ac.name}`,
+
+            opacity:0.35
+
+        };
+
+    }
+
+
+    aircraft.forEach(ac=>{
+
+        fuelTraces.push(
+            createFuelEnvelope(ac)
+        );
+
+    });
+
+
+    Plotly.newPlot(
+        "fuelPlot",
+        fuelTraces,
+        {
+
+            title:`Fuel Required vs Cruise Speed (${defaultTripDistance} NM)`,
+
+            xaxis:{
+                title:"Cruise Speed (kt)",
+                dtick:5
+            },
+
+            yaxis:{
+                title:"Fuel Required (gal)",
+                dtick:2.5
+            },
+
+            hovermode:"x unified",
+
+            template:"plotly_dark"
+
+        },
+        {
+            responsive:true
+        }
     );
 
-});
+}
 
 
+// =====================================================
+// Plot 3: NMPG vs Speed
+// =====================================================
 
-Plotly.newPlot(
-    "fuelPlot",
-    fuelTraces,
-    {
-        title:"Fuel Required vs Cruise Speed (800 NM Trip)",
+function createNMPGPlot(){
 
-        xaxis:{
-            title:"Cruise Speed (kt)"
-        },
+    const gphValues=[
+        4,5,6,7,8,9,10,11,12,13
+    ];
 
-        yaxis:{
-            title:"Fuel Required (gal)"
-        },
 
-        hovermode:"x unified",
+    let nmpgTraces = gphValues.map(gph=>({
 
-        template:"plotly_dark"
-    },
-    {
-        responsive:true
+        x:speeds,
+
+        y:speeds.map(speed =>
+            speed/gph
+        ),
+
+        mode:"lines",
+
+        name:`${gph} GPH`
+
+    }));
+
+
+    function createNMPGEnvelope(ac){
+
+        let x=[];
+        let y=[];
+
+
+        ac.modes.forEach(mode=>{
+
+            x.push(mode.speed);
+
+            y.push(
+                mode.speed/mode.gph
+            );
+
+        });
+
+
+        [...ac.modes].reverse().forEach(mode=>{
+
+            x.push(mode.speed);
+
+            y.push(
+                mode.speed/(mode.gph*1.15)
+            );
+
+        });
+
+
+        x.push(x[0]);
+        y.push(y[0]);
+
+
+        return {
+
+            x:x,
+            y:y,
+
+            mode:"lines",
+
+            fill:"toself",
+
+            name:`${ac.name}`,
+
+            opacity:0.35
+
+        };
+
     }
-);
 
+
+    aircraft.forEach(ac=>{
+
+        nmpgTraces.push(
+            createNMPGEnvelope(ac)
+        );
+
+    });
+
+
+    Plotly.newPlot(
+        "nmpgPlot",
+        nmpgTraces,
+        {
+
+            title:"Fuel Efficiency vs Cruise Speed",
+
+            xaxis:{
+                title:"Cruise Speed (kt)",
+                dtick:5
+            },
+
+            yaxis:{
+                title:"NMPG",
+                dtick:2.5
+            },
+
+            hovermode:"x unified",
+
+            template:"plotly_white"
+
+        },
+        {
+            responsive:true
+        }
+    );
+
+}
+
+
+// =====================================================
+// Plot 4: Passenger Efficiency vs Speed
+// =====================================================
+
+function createPassengerPlot(){
+
+    let passengerTraces=[];
+
+
+    function createPassengerEnvelope(ac){
+
+        let x=[];
+        let y=[];
+
+
+        ac.modes.forEach(mode=>{
+
+            x.push(mode.speed);
+
+            y.push(
+                (mode.speed/mode.gph)*ac.passengers
+            );
+
+        });
+
+
+        [...ac.modes].reverse().forEach(mode=>{
+
+            x.push(mode.speed);
+
+            y.push(
+                (mode.speed/(mode.gph*1.15))*ac.passengers
+            );
+
+        });
+
+
+        x.push(x[0]);
+        y.push(y[0]);
+
+
+        return {
+
+            x:x,
+
+            y:y,
+
+            mode:"lines",
+
+            fill:"toself",
+
+            name:`${ac.name} (${ac.passengers} pax)`,
+
+            opacity:0.35
+
+        };
+
+    }
+
+
+    aircraft.forEach(ac=>{
+
+        passengerTraces.push(
+            createPassengerEnvelope(ac)
+        );
+
+    });
+
+
+    Plotly.newPlot(
+        "passengerPlot",
+        passengerTraces,
+        {
+
+            title:"Passenger Efficiency vs Cruise Speed",
+
+            xaxis:{
+                title:"Cruise Speed (kt)",
+                dtick:5
+            },
+
+            yaxis:{
+                title:"NMPG × Passengers",
+                dtick:5
+            },
+
+            hovermode:"x unified",
+
+            template:"plotly_white"
+
+        },
+        {
+            responsive:true
+        }
+    );
+
+}
+
+
+// =====================================================
+// Plot 5: Time vs Fuel Used
+// =====================================================
+
+function createTimeFuelPlot(){
+
+    let timeFuelTraces=[];
+
+
+    function createTimeFuelEnvelope(ac){
+
+        let x=[];
+        let y=[];
+
+
+        // Fast/efficient boundary
+
+        ac.modes.forEach(mode=>{
+
+            const time =
+                defaultTripDistance/mode.speed;
+
+            const fuel =
+                time*mode.gph;
+
+
+            x.push(time);
+
+            y.push(fuel);
+
+        });
+
+
+        // Return boundary to create envelope thickness
+
+        [...ac.modes].reverse().forEach(mode=>{
+
+            const time =
+                defaultTripDistance/mode.speed;
+
+            const fuel =
+                time*(mode.gph+1);
+
+
+            x.push(time);
+
+            y.push(fuel);
+
+        });
+
+
+        x.push(x[0]);
+        y.push(y[0]);
+
+
+        return {
+
+            x:x,
+
+            y:y,
+
+            mode:"lines",
+
+            fill:"toself",
+
+            name:`${ac.name} envelope`,
+
+            opacity:0.35
+
+        };
+
+    }
+
+
+    // Add aircraft envelopes
+
+    aircraft.forEach(ac=>{
+
+        timeFuelTraces.push(
+            createTimeFuelEnvelope(ac)
+        );
+
+    });
+
+
+    // Add individual cruise mode points
+
+    aircraft.forEach(ac=>{
+
+        timeFuelTraces.push({
+
+            x:ac.modes.map(mode =>
+                defaultTripDistance/mode.speed
+            ),
+
+            y:ac.modes.map(mode =>
+                (defaultTripDistance/mode.speed)*mode.gph
+            ),
+
+            mode:"markers+text",
+
+            text:ac.modes.map(mode =>
+                mode.name
+            ),
+
+            textposition:"top center",
+
+            name:`${ac.name} modes`
+
+        });
+
+    });
+
+
+    Plotly.newPlot(
+        "timeFuelPlot",
+        timeFuelTraces,
+        {
+
+            title:`Trip Time vs Fuel Used (${defaultTripDistance} NM)`,
+
+            xaxis:{
+                title:"Trip Time (hr)",
+                dtick:0.25
+            },
+
+            yaxis:{
+                title:"Fuel Used (gal)",
+                dtick:2.5
+            },
+
+            hovermode:"x unified",
+
+            template:"plotly_white"
+
+        },
+        {
+            responsive:true
+        }
+    );
+
+}
+
+
+// =====================================================
+// Update All Plots
+// =====================================================
+
+function updateAllPlots(){
+
+    createTimePlot();
+
+    createFuelPlot();
+
+    createNMPGPlot();
+
+    createPassengerPlot();
+
+    createTimeFuelPlot();
+
+}
+
+
+// =====================================================
+// Global Trip Distance Slider
+// =====================================================
+
+document
+    .getElementById("distanceSlider")
+    .addEventListener("input", function(){
+
+        defaultTripDistance = Number(this.value);
+
+        document.getElementById("distanceValue").textContent =
+            defaultTripDistance;
+
+        updateAllPlots();
+
+    });
+
+
+// =====================================================
+// Initial Plot Generation
+// =====================================================
+
+updateAllPlots();
 
 </script>
 
