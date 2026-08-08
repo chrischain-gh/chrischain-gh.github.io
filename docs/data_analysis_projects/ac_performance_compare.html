@@ -320,8 +320,8 @@
 // =====================================================
 
 const speeds = Array.from(
-    {length:22},
-    (_,i)=>95+i*5
+    {length:23},
+    (_,i)=>90+i*5
 );
 
 let defaultTripDistance = 800;
@@ -338,9 +338,9 @@ const aircraft = [
     passengers:2,
 
     modes:[
-        {name:"Economy", speed:95, gph:4},
-        {name:"Normal", speed:105, gph:5},
-        {name:"Max Cruise", speed:115, gph:7}
+        {name:"Economy", speed:90, gph:5},
+        {name:"Normal", speed:100, gph:6},
+        {name:"Max Cruise", speed:105, gph:7}
     ]
 },
 
@@ -393,9 +393,9 @@ const aircraft = [
     passengers:4,
 
     modes:[
-        {name:"Economy", speed:160, gph:8},
+        {name:"Economy", speed:160, gph:7},
         {name:"Normal", speed:175, gph:9},
-        {name:"Max Cruise", speed:185, gph:10}
+        {name:"Max Cruise", speed:185, gph:11}
     ]
 },
 
@@ -404,11 +404,23 @@ const aircraft = [
     passengers:7,
 
     modes:[
-        {name:"Economy", speed:140, gph:9},
-        {name:"Normal", speed:165, gph:11},
-        {name:"Max Cruise", speed:185, gph:13}
+        {name:"Economy", speed:155, gph:12},
+        {name:"Normal", speed:180, gph:15},
+        {name:"Max Cruise", speed:192, gph:19}
+    ]
+},
+
+{
+    name:"V-Twin Velocity",
+    passengers:6,
+
+    modes:[
+        {name:"Economy", speed:172, gph:12},
+        {name:"Normal", speed:185, gph:16},
+        {name:"Max Cruise", speed:195, gph:19}
     ]
 }
+
 
 ];
 
