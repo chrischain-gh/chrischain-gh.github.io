@@ -163,6 +163,17 @@ const aircraft = [
         {name:"Normal", speed:175, gph:9},
         {name:"Max Cruise", speed:185, gph:10}
     ]
+},
+
+{
+    name:"DA-62",
+    passengers:7,
+
+    modes:[
+        {name:"Economy", speed:140, gph:9},
+        {name:"Normal", speed:165, gph:11},
+        {name:"Max Cruise", speed:185, gph:13}
+    ]
 }
 
 ];
@@ -500,7 +511,79 @@ function createNMPGPlot(){
 
             hovermode:"x unified",
 
-            template:"plotly_white"
+            template:"plotly_white",
+
+            shapes: [
+            {
+                type:"line",
+                x0:0,
+                x1:1,
+                xref:"paper",
+                y0:15,
+                y1:15,
+                line:{
+                    dash:"dash",
+                    width:1
+                }
+            },
+            {
+                type:"line",
+                x0:0,
+                x1:1,
+                xref:"paper",
+                y0:20,
+                y1:20,
+                line:{
+                    dash:"dash",
+                    width:1
+                }
+            },
+            {
+                type:"line",
+                x0:0,
+                x1:1,
+                xref:"paper",
+                y0:25,
+                y1:25,
+                line:{
+                    dash:"dash",
+                    width:1
+                }
+            }
+            ],
+
+            annotations: [
+                {
+                    x:1,
+                    xref:"paper",
+                    y:15,
+                    yref:"y",
+                    text:"F150",
+                    showarrow:false,
+                    xanchor:"left"
+                },
+                {
+                    x:1,
+                    xref:"paper",
+                    y:20,
+                    yref:"y",
+                    text:"CRV",
+                    showarrow:false,
+                    xanchor:"left"
+                },
+                {
+                    x:1,
+                    xref:"paper",
+                    y:25,
+                    yref:"y",
+                    text:"Mirage",
+                    showarrow:false,
+                    xanchor:"left"
+                }
+            ]
+
+
+
 
         },
         {
@@ -599,7 +682,77 @@ function createPassengerPlot(){
 
             hovermode:"x unified",
 
-            template:"plotly_white"
+            template:"plotly_white",
+
+            shapes: [
+            {
+                type:"line",
+                x0:0,
+                x1:1,
+                xref:"paper",
+                y0:60,
+                y1:60,
+                line:{
+                    dash:"dash",
+                    width:1
+                }
+            },
+            {
+                type:"line",
+                x0:0,
+                x1:1,
+                xref:"paper",
+                y0:80,
+                y1:80,
+                line:{
+                    dash:"dash",
+                    width:1
+                }
+            },
+            {
+                type:"line",
+                x0:0,
+                x1:1,
+                xref:"paper",
+                y0:100,
+                y1:100,
+                line:{
+                    dash:"dash",
+                    width:1
+                }
+            }
+            ],
+
+            annotations: [
+                {
+                    x:1,
+                    xref:"paper",
+                    y:60,
+                    yref:"y",
+                    text:"F150",
+                    showarrow:false,
+                    xanchor:"left"
+                },
+                {
+                    x:1,
+                    xref:"paper",
+                    y:80,
+                    yref:"y",
+                    text:"CRV",
+                    showarrow:false,
+                    xanchor:"left"
+                },
+                {
+                    x:1,
+                    xref:"paper",
+                    y:100,
+                    yref:"y",
+                    text:"Mirage",
+                    showarrow:false,
+                    xanchor:"left"
+                }
+            ]
+
 
         },
         {
