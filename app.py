@@ -54,9 +54,13 @@ def pyscript_test_aircraft_mpg():
 def aircraft_pipe_dreams():
     return render_template('aircraft_pipe_dreams.html')
 
-@app.route('/zenith_build_study.html')
+@app.route('/aircraft_projects/zenith_build_study.html')
 def zenith_build_study():
-    return render_template('zenith_build_study.html')
+    return render_template('aircraft_projects/zenith_build_study.html')
+
+@app.route('/aircraft_projects/ac_to_sleep_in.html')
+def ac_to_sleep_in():
+    return render_template('aircraft_projects/ac_to_sleep_in.html')
 
 @app.route('/lancair_360_build/lancair_360_build_manual.html')
 def lancair_360_build_manual():
