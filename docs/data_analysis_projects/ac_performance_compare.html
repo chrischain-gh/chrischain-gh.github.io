@@ -311,7 +311,125 @@
 
 </div>
 
+<!-- ===================================================== -->
+<!-- Operating Cost Calculator -->
+<!-- ===================================================== -->
 
+<div style="
+    margin-top:60px;
+    padding:25px;
+    border:1px solid #ccc;
+    border-radius:10px;
+">
+
+    <h2>Operating Cost Comparison</h2>
+
+    <div style="
+        display:grid;
+        grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+        gap:20px;
+    ">
+
+        <div>
+            <label for="hoursPerYear">
+                <strong>Hours Flown Per Year</strong>
+            </label>
+
+            <input
+                type="number"
+                id="hoursPerYear"
+                value="200"
+                min="1"
+                step="10"
+                style="width:100%;"
+            >
+        </div>
+
+
+        <div>
+            <label for="fuelCost">
+                <strong>Fuel Cost ($/gal)</strong>
+            </label>
+
+            <input
+                type="number"
+                id="fuelCost"
+                value="10"
+                min="0"
+                step="0.10"
+                style="width:100%;"
+            >
+        </div>
+
+
+        <div>
+            <label for="insuranceDifference">
+                <strong>Retract Insurance Increase ($/year)</strong>
+            </label>
+
+            <input
+                type="number"
+                id="insuranceDifference"
+                value="1000"
+                min="0"
+                step="100"
+                style="width:100%;"
+            >
+        </div>
+
+
+        <div>
+            <label for="maintenanceDifference">
+                <strong>Retract Maintenance Increase ($/year)</strong>
+            </label>
+
+            <input
+                type="number"
+                id="maintenanceDifference"
+                value="1000"
+                min="0"
+                step="100"
+                style="width:100%;"
+            >
+        </div>
+
+    </div>
+
+
+    <button
+        onclick="calculateOperatingCosts()"
+        style="
+            margin-top:25px;
+            padding:10px 20px;
+        "
+    >
+        Calculate
+    </button>
+
+
+    <div
+        id="operatingCostResults"
+        style="
+            margin-top:30px;
+            overflow-x:auto;
+        "
+    ></div>
+
+</div>
+
+<h2>Operating Cost: $/hr vs $/NM</h2>
+
+<div
+    id="operatingCostPlot"
+    style="width:100%;height:700px;"
+></div>
+
+<h2>Operating Cost Per Passenger</h2>
+
+<div
+    id="operatingCostPerPassengerPlot"
+    style="width:100%;height:700px;"
+></div>
 
 
 <script>
@@ -327,6 +445,39 @@ const speeds = Array.from(
 
 let defaultTripDistance = 800;
 
+// =====================================================
+// Engine definitions
+// =====================================================
+
+const engines = {
+
+    "O-320": {
+        replacementCost:30000,
+        replacementHours:2000
+    },
+
+    "O-360": {
+        replacementCost:40000,
+        replacementHours:2000
+    },
+
+    "Rotax 912": {
+        replacementCost:30000,
+        replacementHours:2000
+    },
+
+    "O-200": {
+        replacementCost:20000,
+        replacementHours:2000
+    },
+
+    "Continental CD-155": {
+        replacementCost:50000,
+        replacementHours:2000
+    }
+
+};
+
 
 // =====================================================
 // Aircraft cruise mode definitions
@@ -334,96 +485,144 @@ let defaultTripDistance = 800;
 
 const aircraft = [
 
-{
-    name:"Rebel Murphy",
-    passengers:2,
+    {
+        name:"Rebel Murphy",
+        passengers:2,
 
-    modes:[
-        {name:"Economy", speed:90, gph:5},
-        {name:"Normal", speed:100, gph:6},
-        {name:"Max Cruise", speed:105, gph:7}
-    ]
-},
+        engine:"O-320",
+        retractable:false,
 
-{
-    name:"Glasair I-II",
-    passengers:2,
+        modes:[
+            {name:"Economy", speed:90, gph:5},
+            {name:"Normal", speed:100, gph:6},
+            {name:"Max Cruise", speed:105, gph:7}
+        ]
+    },
 
-    modes:[
-        {name:"Economy", speed:155, gph:7},
-        {name:"Normal", speed:165, gph:8},
-        {name:"Max Cruise", speed:175, gph:10}
-    ]
-},
 
-{
-    name:"Lancair 320-360",
-    passengers:2,
+    {
+        name:"Glasair I-II FG",
+        passengers:2,
 
-    modes:[
-        {name:"Economy", speed:170, gph:7},
-        {name:"Normal", speed:180, gph:8},
-        {name:"Max Cruise", speed:190, gph:10}
-    ]
-},
+        engine:"O-360",
+        retractable:false,
 
-{
-    name:"Q200",
-    passengers:2,
+        modes:[
+            {name:"Economy", speed:155, gph:7},
+            {name:"Normal", speed:165, gph:8},
+            {name:"Max Cruise", speed:175, gph:10}
+        ]
+    },
 
-    modes:[
-        {name:"Economy", speed:155, gph:4},
-        {name:"Normal", speed:160, gph:5},
-        {name:"Max Cruise", speed:165, gph:6}
-    ]
-},
 
-{
-    name:"Long EZ",
-    passengers:2,
+    {
+        name:"Lancair 320-360",
+        passengers:2,
 
-    modes:[
-        {name:"Economy", speed:125, gph:4},
-        {name:"Normal", speed:135, gph:5},
-        {name:"Max Cruise", speed:140, gph:6}
-    ]
-},
+        engine:"O-360",
+        retractable:true,
 
-{
-    name:"Cozy IV",
-    passengers:4,
+        modes:[
+            {name:"Economy", speed:170, gph:7},
+            {name:"Normal", speed:180, gph:8},
+            {name:"Max Cruise", speed:190, gph:10}
+        ]
+    },
 
-    modes:[
-        {name:"Economy", speed:160, gph:7},
-        {name:"Normal", speed:175, gph:9},
-        {name:"Max Cruise", speed:185, gph:11}
-    ]
-},
 
-{
-    name:"DA-62",
-    passengers:7,
+    {
+        name:"Q200",
+        passengers:2,
 
-    modes:[
-        {name:"Economy", speed:155, gph:12},
-        {name:"Normal", speed:180, gph:15},
-        {name:"Max Cruise", speed:192, gph:19}
-    ]
-},
+        engine:"O-200",
+        retractable:false,
 
-{
-    name:"V-Twin Velocity",
-    passengers:6,
+        modes:[
+            {name:"Economy", speed:155, gph:4},
+            {name:"Normal", speed:160, gph:5},
+            {name:"Max Cruise", speed:165, gph:6}
+        ]
+    },
 
-    modes:[
-        {name:"Economy", speed:172, gph:12},
-        {name:"Normal", speed:185, gph:16},
-        {name:"Max Cruise", speed:195, gph:19}
-    ]
-}
 
+    {
+        name:"Long EZ",
+        passengers:2,
+
+        engine:"O-320",
+        retractable:true,
+
+        modes:[
+            {name:"Economy", speed:125, gph:4},
+            {name:"Normal", speed:135, gph:5},
+            {name:"Max Cruise", speed:140, gph:6}
+        ]
+    },
+
+
+    {
+        name:"Cozy IV",
+        passengers:4,
+
+        engine:"O-360",
+        retractable:true,
+
+        modes:[
+            {name:"Economy", speed:160, gph:7},
+            {name:"Normal", speed:175, gph:9},
+            {name:"Max Cruise", speed:185, gph:11}
+        ]
+    },
+
+
+    {
+        name:"DA-62",
+        passengers:7,
+
+        engine:"Continental CD-155",
+        retractable:true,
+
+        modes:[
+            {name:"Economy", speed:155, gph:12},
+            {name:"Normal", speed:180, gph:15},
+            {name:"Max Cruise", speed:192, gph:19}
+        ]
+    },
+
+
+    {
+        name:"V-Twin Velocity",
+        passengers:6,
+
+        engine:"O-360",
+        retractable:true,
+
+        modes:[
+            {name:"Economy", speed:172, gph:12},
+            {name:"Normal", speed:185, gph:16},
+            {name:"Max Cruise", speed:195, gph:19}
+        ]
+    }
 
 ];
+
+//hours_flown_in_year = 200
+//fuel_cost_pg = 10
+
+//o320_replacement_cost = 30000
+//o360_replacement_cost = 40000
+//time_until_replacement = 1000
+
+//insurance_add_from_retract_per_yr = 1000
+//maintenance_add_from_retract = 1000
+
+//nm_traversed = hours_flown_in_year * cruise_speed_kts
+//if retract:
+//    year_cost = hours_flown_in_year * gph * fuel_cost_pg + insurance_add_from_retract_per_yr + maintenance_add_from_retract
+//else:
+//    year_cost = hours_flown_in_year * gph * fuel_cost_pg
+//cost_per_nm = year_cost / nm_traversed
+
 
 
 // =====================================================
@@ -1154,6 +1353,7 @@ function createTimeFuelPlot(){
 }
 
 
+
 // =====================================================
 // Update All Plots
 // =====================================================
@@ -1196,6 +1396,624 @@ document
 // =====================================================
 
 updateAllPlots();
+
+
+
+
+
+
+
+
+// =====================================================
+// Aircraft Operating Cost Comparison
+// =====================================================
+
+function calculateOperatingCosts(){
+
+    const hoursPerYear =
+        Number(document.getElementById("hoursPerYear").value);
+
+    const fuelCost =
+        Number(document.getElementById("fuelCost").value);
+
+    const insuranceDifference =
+        Number(document.getElementById("insuranceDifference").value);
+
+    const maintenanceDifference =
+        Number(document.getElementById("maintenanceDifference").value);
+
+
+    // -------------------------------------------------
+    // Calculate every cruise mode for every aircraft
+    // -------------------------------------------------
+
+    const results = [];
+
+
+    aircraft.forEach(ac => {
+
+        ac.modes.forEach(mode => {
+
+            const speed = mode.speed;
+            const gph = mode.gph;
+
+
+            // -------------------------------------------------
+            // Fuel cost
+            // -------------------------------------------------
+
+            const fuelCostPerHour =
+                gph * fuelCost;
+
+
+            // -------------------------------------------------
+            // Engine replacement reserve
+            // -------------------------------------------------
+
+            const engine =
+                engines[ac.engine];
+
+            const engineReservePerHour =
+                engine.replacementCost /
+                engine.replacementHours;
+
+
+            // -------------------------------------------------
+            // Retractable gear costs
+            // -------------------------------------------------
+
+            const retractAnnualCost =
+                ac.retractable
+                    ? insuranceDifference + maintenanceDifference
+                    : 0;
+
+
+            const retractCostPerHour =
+                retractAnnualCost / hoursPerYear;
+
+
+            // -------------------------------------------------
+            // Total hourly cost
+            // -------------------------------------------------
+
+            const totalCostPerHour =
+                fuelCostPerHour +
+                engineReservePerHour +
+                retractCostPerHour;
+
+
+            // -------------------------------------------------
+            // Annual cost
+            // -------------------------------------------------
+
+            const annualCost =
+                totalCostPerHour * hoursPerYear;
+
+
+            // -------------------------------------------------
+            // Distance travelled per year
+            // -------------------------------------------------
+
+            const annualNM =
+                hoursPerYear * speed;
+
+
+            // -------------------------------------------------
+            // Cost per NM
+            // -------------------------------------------------
+
+            const costPerNM =
+                totalCostPerHour / speed;
+
+
+            results.push({
+
+                name:ac.name,
+
+                mode:mode.name,
+
+                engine:ac.engine,
+
+                retractable:ac.retractable,
+
+                speed:speed,
+
+                gph:gph,
+
+                fuelCostPerHour:fuelCostPerHour,
+
+                engineReservePerHour:engineReservePerHour,
+
+                retractCostPerHour:retractCostPerHour,
+
+                totalCostPerHour:totalCostPerHour,
+
+                annualCost:annualCost,
+
+                costPerNM:costPerNM,
+
+                annualNM:annualNM
+
+            });
+
+        });
+
+    });
+
+
+    // -------------------------------------------------
+    // Sort cheapest to most expensive
+    // -------------------------------------------------
+
+    results.sort(
+        (a,b) =>
+            a.totalCostPerHour -
+            b.totalCostPerHour
+    );
+
+
+    // -------------------------------------------------
+    // Build results table
+    // -------------------------------------------------
+
+    let html = `
+
+        <h3>Aircraft Operating Cost</h3>
+
+        <table style="
+            width:100%;
+            border-collapse:collapse;
+        ">
+
+            <thead>
+
+                <tr>
+
+                    <th style="text-align:left;">
+                        Aircraft
+                    </th>
+
+                    <th>
+                        Mode
+                    </th>
+
+                    <th>
+                        Engine
+                    </th>
+
+                    <th>
+                        Retract
+                    </th>
+
+                    <th>
+                        Speed
+                    </th>
+
+                    <th>
+                        Fuel/hr
+                    </th>
+
+                    <th>
+                        Engine Reserve/hr
+                    </th>
+
+                    <th>
+                        Retract Cost/hr
+                    </th>
+
+                    <th>
+                        Total/hr
+                    </th>
+
+                    <th>
+                        Cost/NM
+                    </th>
+
+                    <th>
+                        Annual Cost
+                    </th>
+
+                    <th>
+                        Annual NM
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+    `;
+
+
+    results.forEach(result => {
+
+        html += `
+
+            <tr>
+
+                <td>
+                    <strong>
+                        ${result.name}
+                    </strong>
+                </td>
+
+                <td>
+                    ${result.mode}
+                </td>
+
+                <td>
+                    ${result.engine}
+                </td>
+
+                <td>
+                    ${result.retractable ? "Yes" : "No"}
+                </td>
+
+                <td>
+                    ${result.speed} kt
+                </td>
+
+                <td>
+                    $${result.fuelCostPerHour.toFixed(2)}
+                </td>
+
+                <td>
+                    $${result.engineReservePerHour.toFixed(2)}
+                </td>
+
+                <td>
+                    $${result.retractCostPerHour.toFixed(2)}
+                </td>
+
+                <td>
+                    <strong>
+                        $${result.totalCostPerHour.toFixed(2)}
+                    </strong>
+                </td>
+
+                <td>
+                    $${result.costPerNM.toFixed(2)}
+                </td>
+
+                <td>
+                    $${result.annualCost.toLocaleString(
+                        undefined,
+                        {
+                            maximumFractionDigits:0
+                        }
+                    )}
+                </td>
+
+                <td>
+                    ${(result.annualNM / 1000).toFixed(1)}k
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+
+    html += `
+
+            </tbody>
+
+        </table>
+
+    `;
+
+
+    document.getElementById(
+        "operatingCostResults"
+    ).innerHTML = html;
+
+    createOperatingCostPlot(results);
+    createOperatingCostPerPassengerPlot(results)
+
+}
+
+// =====================================================
+// Operating Cost Plot
+// =====================================================
+
+function createOperatingCostPlot(results){
+
+    const traces = [];
+
+
+    // -------------------------------------------------
+    // Create one envelope for each aircraft
+    // -------------------------------------------------
+
+    aircraft.forEach(ac => {
+
+        const aircraftResults =
+            results.filter(result =>
+                result.name === ac.name
+            );
+
+
+        if(aircraftResults.length === 0){
+            return;
+        }
+
+
+        let x = [];
+        let y = [];
+
+
+        // -------------------------------------------------
+        // First boundary
+        // -------------------------------------------------
+
+        aircraftResults.forEach(result => {
+
+            x.push(result.costPerNM);
+
+            y.push(result.totalCostPerHour);
+
+        });
+
+
+        // -------------------------------------------------
+        // Return boundary
+        // -------------------------------------------------
+
+        [...aircraftResults].reverse().forEach(result => {
+
+            x.push(result.costPerNM);
+
+            y.push(result.totalCostPerHour);
+
+        });
+
+
+        // Close envelope
+
+        x.push(x[0]);
+        y.push(y[0]);
+
+
+        // -------------------------------------------------
+        // Envelope
+        // -------------------------------------------------
+
+        traces.push({
+
+            x:x,
+
+            y:y,
+
+            mode:"lines",
+
+            fill:"toself",
+
+            name:ac.name,
+
+            opacity:0.30
+
+        });
+
+
+        // -------------------------------------------------
+        // Individual operating modes
+        // -------------------------------------------------
+
+        traces.push({
+
+            x:aircraftResults.map(
+                result => result.costPerNM
+            ),
+
+            y:aircraftResults.map(
+                result => result.totalCostPerHour
+            ),
+
+            mode:"markers+text",
+
+            text:aircraftResults.map(
+                result => result.mode
+            ),
+
+            textposition:"top center",
+
+            name:`${ac.name} modes`
+
+        });
+
+    });
+
+
+    // -------------------------------------------------
+    // Plot
+    // -------------------------------------------------
+
+    Plotly.newPlot(
+        "operatingCostPlot",
+        traces,
+        {
+
+            title:"Operating Cost Comparison",
+
+            xaxis:{
+                title:"Cost per NM ($/NM)",
+                dtick:0.10
+            },
+
+            yaxis:{
+                title:"Total Operating Cost ($/hr)",
+                dtick:25
+            },
+
+            hovermode:"closest",
+
+            template:"plotly_dark"
+
+        },
+
+        {
+            responsive:true
+        }
+
+    );
+
+}
+
+// =====================================================
+// Operating Cost Per Passenger Plot
+// =====================================================
+
+function createOperatingCostPerPassengerPlot(results){
+
+    const traces = [];
+
+
+    // -------------------------------------------------
+    // Create one envelope for each aircraft
+    // -------------------------------------------------
+
+    aircraft.forEach(ac => {
+
+        const aircraftResults =
+            results.filter(result =>
+                result.name === ac.name
+            );
+
+
+        if(aircraftResults.length === 0){
+            return;
+        }
+
+
+        let x = [];
+        let y = [];
+
+
+        // -------------------------------------------------
+        // First boundary
+        // -------------------------------------------------
+
+        aircraftResults.forEach(result => {
+
+            x.push(
+                result.costPerNM / ac.passengers
+            );
+
+            y.push(
+                result.totalCostPerHour / ac.passengers
+            );
+
+        });
+
+
+        // -------------------------------------------------
+        // Return boundary
+        // -------------------------------------------------
+
+        [...aircraftResults].reverse().forEach(result => {
+
+            x.push(
+                result.costPerNM / ac.passengers
+            );
+
+            y.push(
+                result.totalCostPerHour / ac.passengers
+            );
+
+        });
+
+
+        // Close envelope
+
+        x.push(x[0]);
+        y.push(y[0]);
+
+
+        // -------------------------------------------------
+        // Envelope
+        // -------------------------------------------------
+
+        traces.push({
+
+            x:x,
+
+            y:y,
+
+            mode:"lines",
+
+            fill:"toself",
+
+            name:ac.name,
+
+            opacity:0.30
+
+        });
+
+
+        // -------------------------------------------------
+        // Individual operating modes
+        // -------------------------------------------------
+
+        traces.push({
+
+            x:aircraftResults.map(
+                result =>
+                    result.costPerNM / ac.passengers
+            ),
+
+            y:aircraftResults.map(
+                result =>
+                    result.totalCostPerHour / ac.passengers
+            ),
+
+            mode:"markers+text",
+
+            text:aircraftResults.map(
+                result => result.mode
+            ),
+
+            textposition:"top center",
+
+            name:`${ac.name} modes`
+
+        });
+
+    });
+
+
+    // -------------------------------------------------
+    // Plot
+    // -------------------------------------------------
+
+    Plotly.newPlot(
+        "operatingCostPerPassengerPlot",
+        traces,
+        {
+
+            title:"Operating Cost Per Passenger",
+
+            xaxis:{
+                title:"Cost per NM per Passenger ($/NM/pax)"
+            },
+
+            yaxis:{
+                title:"Total Operating Cost per Passenger ($/hr/pax)"
+            },
+
+            hovermode:"closest",
+
+            template:"plotly_dark"
+
+        },
+
+        {
+            responsive:true
+        }
+
+    );
+
+}
 
 </script>
 
