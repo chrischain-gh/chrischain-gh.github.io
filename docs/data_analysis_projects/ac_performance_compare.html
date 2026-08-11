@@ -153,9 +153,7 @@
         <div class="dropdown">
             <button class="dropbtn">Home</button>
             <div class="dropdown-content">
-            <a href="#">Link 1</a>
-            <a href="#">Link 2</a>
-            <a href="#">Link 3</a>
+            <a href="../index.html">Home Page</a>
             </div>
         </div>
         
@@ -428,6 +426,13 @@
 
 <div
     id="operatingCostPerPassengerPlot"
+    style="width:100%;height:700px;"
+></div>
+
+<h2>Annual Operating Cost vs Annual Distance</h2>
+
+<div
+    id="annualCostPlot"
     style="width:100%;height:700px;"
 ></div>
 
@@ -1710,6 +1715,7 @@ function calculateOperatingCosts(){
 
     createOperatingCostPlot(results);
     createOperatingCostPerPassengerPlot(results)
+    createAnnualCostPlot(results);
 
 }
 
@@ -1999,6 +2005,150 @@ function createOperatingCostPerPassengerPlot(results){
 
             yaxis:{
                 title:"Total Operating Cost per Passenger ($/hr/pax)"
+            },
+
+            hovermode:"closest",
+
+            template:"plotly_dark"
+
+        },
+
+        {
+            responsive:true
+        }
+
+    );
+
+}
+
+// =====================================================
+// Annual Operating Cost vs Annual Distance
+// =====================================================
+
+function createAnnualCostPlot(results){
+
+    const traces = [];
+
+
+    aircraft.forEach(ac => {
+
+        const aircraftResults =
+            results.filter(result =>
+                result.name === ac.name
+            );
+
+
+        if(aircraftResults.length === 0){
+            return;
+        }
+
+
+        let x = [];
+        let y = [];
+
+
+        // -------------------------------------------------
+        // First boundary
+        // -------------------------------------------------
+
+        aircraftResults.forEach(result => {
+
+            x.push(result.annualNM);
+
+            y.push(result.annualCost);
+
+        });
+
+
+        // -------------------------------------------------
+        // Return boundary
+        // -------------------------------------------------
+
+        [...aircraftResults].reverse().forEach(result => {
+
+            x.push(result.annualNM);
+
+            y.push(result.annualCost);
+
+        });
+
+
+        // Close envelope
+
+        x.push(x[0]);
+        y.push(y[0]);
+
+
+        // -------------------------------------------------
+        // Aircraft envelope
+        // -------------------------------------------------
+
+        traces.push({
+
+            x:x,
+
+            y:y,
+
+            mode:"lines",
+
+            fill:"toself",
+
+            name:ac.name,
+
+            opacity:0.30
+
+        });
+
+
+        // -------------------------------------------------
+        // Individual operating modes
+        // -------------------------------------------------
+
+        traces.push({
+
+            x:aircraftResults.map(
+                result => result.annualNM
+            ),
+
+            y:aircraftResults.map(
+                result => result.annualCost
+            ),
+
+            mode:"markers+text",
+
+            text:aircraftResults.map(
+                result => result.mode
+            ),
+
+            textposition:"top center",
+
+            name:`${ac.name} modes`
+
+        });
+
+    });
+
+
+    // -------------------------------------------------
+    // Plot
+    // -------------------------------------------------
+
+    Plotly.newPlot(
+        "annualCostPlot",
+        traces,
+        {
+
+            title:"Annual Operating Cost vs Annual Distance",
+
+            xaxis:{
+                title:"Total NM Flown per Year",
+                tickformat:",.0f"
+            },
+
+            yaxis:{
+                title:"Total Operating Cost per Year ($)",
+                tickprefix:"$",
+                tickformat:",.0f"
             },
 
             hovermode:"closest",
