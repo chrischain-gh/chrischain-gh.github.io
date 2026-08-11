@@ -1797,6 +1797,10 @@ function createAnnualCostPlot(results){
     const traces = [];
 
 
+    // -------------------------------------------------
+    // Aircraft envelopes
+    // -------------------------------------------------
+
     aircraft.forEach(ac => {
 
         const aircraftResults =
@@ -1814,27 +1818,21 @@ function createAnnualCostPlot(results){
         let y = [];
 
 
-        // -------------------------------------------------
         // First boundary
-        // -------------------------------------------------
 
         aircraftResults.forEach(result => {
 
             x.push(result.annualNM);
-
             y.push(result.annualCost);
 
         });
 
 
-        // -------------------------------------------------
         // Return boundary
-        // -------------------------------------------------
 
         [...aircraftResults].reverse().forEach(result => {
 
             x.push(result.annualNM);
-
             y.push(result.annualCost);
 
         });
@@ -1846,14 +1844,9 @@ function createAnnualCostPlot(results){
         y.push(y[0]);
 
 
-        // -------------------------------------------------
-        // Aircraft envelope
-        // -------------------------------------------------
-
         traces.push({
 
             x:x,
-
             y:y,
 
             mode:"lines",
@@ -1896,9 +1889,57 @@ function createAnnualCostPlot(results){
     });
 
 
-    // -------------------------------------------------
+    // =====================================================
+    // $/NM Reference Lines
+    // =====================================================
+
+    const costPerNMValues = [
+        0.50,
+        0.60,
+        0.70,
+        0.80,
+        0.90,
+        1.0
+    ];
+
+
+    // Find maximum annual distance in the results
+
+    const maxNM = Math.max(
+        ...results.map(result => result.annualNM)
+    );
+
+
+    costPerNMValues.forEach(costPerNM => {
+
+        traces.push({
+
+            x:[0, maxNM],
+
+            y:[
+                0,
+                maxNM * costPerNM
+            ],
+
+            mode:"lines",
+
+            name:`$${costPerNM.toFixed(2)}/NM`,
+
+            line:{
+                dash:"dash"
+            },
+
+            hovertemplate:
+                `$${costPerNM.toFixed(2)}/NM<extra></extra>`
+
+        });
+
+    });
+
+
+    // =====================================================
     // Plot
-    // -------------------------------------------------
+    // =====================================================
 
     Plotly.newPlot(
         "annualCostPlot",
