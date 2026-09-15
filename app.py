@@ -54,21 +54,25 @@ def pyscript_test_aircraft_mpg():
 def aircraft_pipe_dreams():
     return render_template('aircraft_pipe_dreams.html')
 
-@app.route('/aircraft_projects/zenith_build_study.html')
+@app.route('/aircraft_studies/zenith_build_study.html')
 def zenith_build_study():
-    return render_template('aircraft_projects/zenith_build_study.html')
+    return render_template('aircraft_studies/zenith_build_study.html')
 
-@app.route('/aircraft_projects/ac_to_sleep_in.html')
+@app.route('/aircraft_studies/ac_to_sleep_in.html')
 def ac_to_sleep_in():
-    return render_template('aircraft_projects/ac_to_sleep_in.html')
+    return render_template('aircraft_studies/ac_to_sleep_in.html')
 
-@app.route('/lancair_360_build/lancair_360_build_manual.html')
+@app.route('/aircraft_studies/lancair_360_build_manual.html')
 def lancair_360_build_manual():
-    return render_template('lancair_360_build/lancair_360_build_manual.html')
+    return render_template('aircraft_studies/lancair_360_build_manual.html')
 
-@app.route('/lancair_legacy_build/lancair_legacy_build_manual.html')
+@app.route('/aircraft_studies/lancair_legacy_build_manual.html')
 def lancair_legacy_build_manual():
-    return render_template('lancair_legacy_build/lancair_legacy_build_manual.html')
+    return render_template('aircraft_studies/lancair_legacy_build_manual.html')
+
+@app.route('/aircraft_studies/cozy_plans.html')
+def cozy_plans():
+    return render_template('aircraft_studies/cozy_plans.html')
 
 @app.route('/soundsystem/build.html')
 def soundsystem_build():
