@@ -6,6 +6,8 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+
+
 @app.route('/account_links.html')
 def account_links():
     return render_template('account_links.html')
@@ -22,6 +24,8 @@ def photography():
 def video():
     return render_template('video.html')
 
+
+
 @app.route('/resumes/resume_aviation.html')
 def resume_aviation():
     return render_template('resumes/resume_aviation.html')
@@ -30,9 +34,12 @@ def resume_aviation():
 def music_resume():
     return render_template('resumes/music_resume.html')
 
+
 @app.route('/data_analysis_projects/ac_performance_compare.html')
 def ac_perf_compare_js():
     return render_template('data_analysis_projects/ac_performance_compare.html')
+
+
 
 @app.route('/python_projects/aircraft_mpg.html')
 def aircraft_mpg():
@@ -50,9 +57,12 @@ def rekordbox_parser():
 def pyscript_test_aircraft_mpg():
     return render_template('python_projects/pyscript_test_aircraft_mpg.html')
 
+
+
 @app.route('/aircraft_pipe_dreams.html')
 def aircraft_pipe_dreams():
     return render_template('aircraft_pipe_dreams.html')
+
 
 @app.route('/aircraft_studies/zenith_build_study.html')
 def zenith_build_study():
@@ -74,9 +84,16 @@ def lancair_legacy_build_manual():
 def cozy_plans():
     return render_template('aircraft_studies/cozy_plans.html')
 
+@app.route('/aircraft_studies/murphy_rebel_build_manual/murphy_rebel_build_manual.html')
+def murphy_rebel_build_manual():
+    return render_template('aircraft_studies/murphy_rebel_build_manual/murphy_rebel_build_manual.html')
+
+
 @app.route('/soundsystem/build.html')
 def soundsystem_build():
     return render_template('soundsystem/build.html')
+
+
 
 @app.route('/aircraft/CFCND.html')
 def aircraft_cfcnd():
